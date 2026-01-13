@@ -1,0 +1,31 @@
+---
+title: "Rate Limits"
+description: "Understanding usage limits and how to scale your integration"
+---
+
+To ensure stability and fair access for all users, llm.kiwi implements rate limits across all API endpoints.
+
+## Tiered Limits
+
+Limits are applied based on your current account tier.
+
+| Tier | Tokens Per Minute (TPM) | Requests Per Minute (RPM) |
+| :--- | :--- | :--- |
+| **Free** | 40,000 | 3 |
+| **Developer** | 200,000 | 50 |
+| **Scale** | 1,000,000 | 500 |
+| **Enterprise** | Custom | Custom |
+
+## Handling Rate Limits
+
+When a rate limit is reached, the API will return a `429 Too Many Requests` response.
+
+### Best Practices
+
+1.  **Exponential Backoff**: If you receive a 429, wait for a short period before retrying. Increase the wait time exponentially with each subsequent failure.
+2.  **Request Optimization**: Batch tasks when possible and avoid redundant calls.
+3.  **Token Management**: Monitor your token usage in the response headers to anticipate limits.
+
+## Increasing Your Limits
+
+If your application requires higher throughput, you can upgrade your plan in the [Billing Dashboard](https://llm.kiwi/dashboard/billing) or contact our support team for enterprise-grade custom limits.

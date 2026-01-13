@@ -18,51 +18,34 @@
             "pages": [
               "index",
               "quickstart",
-              "development"
+              "essentials/authentication",
+              "essentials/models",
+              "essentials/rate-limits"
             ]
           },
           {
-            "group": "Customization",
+            "group": "API Reference",
             "pages": [
-              "essentials/settings",
-              "essentials/navigation"
+              "api-reference/chat-completions",
+              "api-reference/image-generation",
+              "api-reference/audio-transcription",
+              "api-reference/errors"
             ]
           },
           {
-            "group": "Writing content",
-            "pages": [
-              "essentials/markdown",
-              "essentials/code",
-              "essentials/images",
-              "essentials/reusable-snippets"
-            ]
-          },
-          {
-            "group": "AI tools",
+            "group": "AI Tools & IDEs",
             "pages": [
               "ai-tools/cursor",
-              "ai-tools/claude-code",
-              "ai-tools/windsurf"
-            ]
-          }
-        ]
-      },
-      {
-        "tab": "API reference",
-        "groups": [
-          {
-            "group": "API documentation",
-            "pages": [
-              "api-reference/introduction"
+              "ai-tools/windsurf",
+              "ai-tools/antigravity",
+              "ai-tools/claude",
+              "ai-tools/mcp-server"
             ]
           },
           {
-            "group": "Endpoint examples",
+            "group": "Resources",
             "pages": [
-              "api-reference/endpoint/get",
-              "api-reference/endpoint/create",
-              "api-reference/endpoint/delete",
-              "api-reference/endpoint/webhook"
+              "essentials/free-tier"
             ]
           }
         ]

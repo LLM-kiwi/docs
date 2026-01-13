@@ -1,0 +1,53 @@
+---
+title: "Audio Transcription"
+description: "Convert speech to text with high accuracy across multiple languages"
+---
+
+Turn your audio files into clean, readable text using our optimized speech-to-text engine.
+
+## Endpoint
+
+```bash
+POST https://api.llm.kiwi/v1/audio/transcriptions
+```
+
+## Request Parameters
+
+| Parameter | Type | Required | Description |
+| :--- | :--- | :--- | :--- |
+| `file` | file | Yes | The audio file to transcribe (supported: mp3, wav, m4a, etc.). |
+| `model` | string | Yes | Use `default` for our standard transcription engine. |
+| `language` | string | No | ISO-639-1 language code of the input (e.g., `en`, `fr`). |
+| `prompt` | string | No | Optional text to guide the style or provide context. |
+
+## Example Usage
+
+<CodeGroup>
+```bash cURL
+curl https://api.llm.kiwi/v1/audio/transcriptions \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: multipart/form-data" \
+  -F file="@recording.mp3" \
+  -F model="default"
+```
+
+```python Python
+from openai import OpenAI
+
+client = OpenAI(base_url="https://api.llm.kiwi/v1", api_key="YOUR_KEY")
+
+audio_file = open("path/to/audio.mp3", "rb")
+transcript = client.audio.transcriptions.create(
+  model="default", 
+  file=audio_file
+)
+
+print(transcript.text)
+```
+</CodeGroup>
+
+## Best Practices
+
+*   **Audio Quality**: High-quality audio with minimal background noise yields significantly better results.
+*   **Supported Formats**: We recommend `.mp3` or `.m4a` for a good balance of quality and file size.
+*   **File Size Limits**: Keep audio files under 25MB for optimal performance.

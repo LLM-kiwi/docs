@@ -1,0 +1,45 @@
+---
+title: "Claude Desktop"
+description: "Power Claude Desktop with llm.kiwi models via MCP"
+---
+
+You can enhance your Claude Desktop experience by integrating llm.kiwi models and tools using the Model Context Protocol (MCP).
+
+## Prerequisites
+
+*   Claude Desktop installed.
+*   An active llm.kiwi API Key.
+
+## Configuration
+
+Add the llm.kiwi MCP server to your Claude Desktop configuration file.
+
+### Configuration Path
+*   **macOS**: `~/Library/Application Support/Claude/claude_desktop_config.json`
+*   **Windows**: `%APPDATA%\Claude\claude_desktop_config.json`
+
+### JSON Config
+```json
+{
+  "mcpServers": {
+    "llm-kiwi": {
+      "command": "npx",
+      "args": ["-y", "@llm-kiwi/mcp-server"],
+      "env": {
+        "LLM_KIWI_API_KEY": "YOUR_API_KEY"
+      }
+    }
+  }
+}
+```
+
+## Available Features
+
+Once connected, Claude can leverage llm.kiwi tools:
+
+*   **Chat Completion**: Ask Claude to use specific llm.kiwi models for specialized queries.
+*   **Image Generation**: Generate images directly within the Claude interface using Flux.
+*   **Audio Analysis**: Provide audio URLs to Claude for transcription and analysis.
+
+> [!TIP]
+> You can ask Claude: "Use llm.kiwi to generate an image of a cyber kiwi bird" to trigger the integration.

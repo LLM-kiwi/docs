@@ -1,0 +1,87 @@
+---
+title: "Chat Completions"
+description: "Generate natural language responses using high-performance AI models"
+---
+
+The Chat Completions API allows you to generate text responses based on a list of messages. This is the primary interface for building chatbots, virtual assistants, and text generation tools.
+
+## Endpoint
+
+```bash
+POST https://api.llm.kiwi/v1/chat/completions
+```
+
+## Request Parameters
+
+| Parameter | Type | Required | Description |
+| :--- | :--- | :--- | :--- |
+| `model` | string | Yes | The model to use: `pro`, `fast`, or `default`. |
+| `messages` | array | Yes | A list of message objects representing the conversation. |
+| `stream` | boolean | No | If `true`, tokens will be sent as data-only server-sent events. Default: `false`. |
+| `temperature` | number | No | Sampling temperature between 0 and 2. Default: `1`. |
+| `max_tokens` | integer | No | The maximum number of tokens to generate in the completion. |
+| `response_format`| object | No | Set to `{ "type": "json_object" }` to enable JSON mode. |
+
+## Message Format
+
+Each message object consists of a `role` and `content`.
+
+| Role | Description |
+| :--- | :--- |
+| `system` | Sets the behavior or persona of the assistant. |
+| `user` | The input message from the end user. |
+| `assistant` | Previous responses from the model used for context. |
+
+### Example Message Array
+```json
+[
+  {"role": "system", "content": "You are a helpful coding assistant."},
+  {"role": "user", "content": "How do I reverse a string in Python?"}
+]
+```
+
+## Streaming Responses
+
+For low-latency applications, enable streaming to receive tokens as they are generated.
+
+```python Python
+from openai import OpenAI
+
+client = OpenAI(base_url="https://api.llm.kiwi/v1", api_key="YOUR_KEY")
+
+stream = client.chat.completions.create(
+    model="fast",
+    messages=[{"role": "user", "content": "Tell me a story about a kiwi."}],
+    stream=True
+)
+
+for chunk in stream:
+    if chunk.choices[0].delta.content:
+        print(chunk.choices[0].delta.content, end="")
+```
+
+## Response Object
+
+```json
+{
+  "id": "chatcmpl-123",
+  "object": "chat.completion",
+  "created": 1677652288,
+  "model": "pro",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "To reverse a string in Python, you can use slicing: `mystring[::-1]`."
+      },
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 12,
+    "completion_tokens": 20,
+    "total_tokens": 32
+  }
+}
+```

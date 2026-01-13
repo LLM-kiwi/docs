@@ -1,0 +1,55 @@
+---
+title: "Image Generation"
+description: "Create stunning visuals from text prompts using state-of-the-art Flux models"
+---
+
+llm.kiwi provides a high-speed interface for generating high-quality images using the latest Flux architecture.
+
+## Endpoint
+
+```bash
+POST https://api.llm.kiwi/v1/images/generations
+```
+
+## Request Parameters
+
+| Parameter | Type | Required | Description |
+| :--- | :--- | :--- | :--- |
+| `prompt` | string | Yes | A text description of the desired image. |
+| `model` | string | No | The model to use. Defaults to our optimized Flux instance. |
+| `n` | integer | No | The number of images to generate (currently supports 1). |
+| `size` | string | No | The dimensions of the image (e.g., `1024x1024`). |
+
+## Example Usage
+
+<CodeGroup>
+```bash cURL
+curl https://api.llm.kiwi/v1/images/generations \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "prompt": "A futuristic city built on a giant floating kiwi fruit, digital art style",
+    "size": "1024x1024"
+  }'
+```
+
+```python Python
+from openai import OpenAI
+
+client = OpenAI(base_url="https://api.llm.kiwi/v1", api_key="YOUR_KEY")
+
+response = client.images.generate(
+  model="flux",
+  prompt="A cute kiwi bird wearing a spacesuit",
+  size="1024x1024"
+)
+
+print(response.data[0].url)
+```
+</CodeGroup>
+
+## Tips for Better Prompts
+
+*   **Be Descriptive**: Instead of "a car", try "a classic 1960s sports car driving through a neon-lit Tokyo street at night".
+*   **Specify Style**: Add terms like "photorealistic", "oil painting", "minimalist", or "3D render" to guide the aesthetic.
+*   **Lighting and Mood**: Use descriptors like "golden hour", "cinematic lighting", or "gloomy atmosphere".

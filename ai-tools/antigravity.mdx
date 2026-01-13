@@ -1,0 +1,39 @@
+---
+title: "Antigravity"
+description: "Integrate llm.kiwi with the Google Antigravity agentic platform"
+---
+
+Antigravity is Google's advanced platform for agentic coding. By connecting llm.kiwi, you can power your Antigravity agents with professional-grade AI models.
+
+## Setup Instructions
+
+llm.kiwi is fully compatible with Antigravity's model provider interface.
+
+### 1. Obtain Your API Key
+Ensure you have an active API key from your [llm.kiwi dashboard](https://llm.kiwi/dashboard/keys).
+
+### 2. Configure Antigravity
+In your Antigravity configuration environment, add llm.kiwi as a custom provider.
+
+```json
+{
+  "providers": {
+    "llm-kiwi": {
+      "baseUrl": "https://api.llm.kiwi/v1",
+      "apiKey": "YOUR_LLM_KIWI_KEY",
+      "models": ["pro", "fast", "default"]
+    }
+  }
+}
+```
+
+## Supported Workflows
+
+Use llm.kiwi's `pro` model for high-precision tasks within Antigravity:
+
+*   **Agentic Planning**: Complex task breakdown using the `pro` model.
+*   **Code Generation**: Rapid scaffolding and logic implementation.
+*   **Verification**: Automated testing and code review.
+
+> [!NOTE]
+> Antigravity's agentic tools work best with the `pro` model due to its advanced reasoning capabilities.

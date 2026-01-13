@@ -1,0 +1,43 @@
+---
+title: "Errors"
+description: "Understanding API error codes and troubleshooting common issues"
+---
+
+llm.kiwi uses conventional HTTP response codes to indicate the success or failure of an API request.
+
+## HTTP Status Codes
+
+| Code | Type | Description |
+| :--- | :--- | :--- |
+| `200` | Success | Everything worked as expected. |
+| `400` | Bad Request | The request was unacceptable, often due to missing parameters. |
+| `401` | Unauthorized | No valid API key provided. |
+| `403` | Forbidden | You lack permissions for the requested resource (e.g., tier limits). |
+| `404` | Not Found | The requested resource doesn't exist. |
+| `429` | Rate Limit | Too many requests hit the API too quickly. |
+| `500` | Server Error | Something went wrong on our end. |
+
+## Error Object Structure
+
+When an error occurs, the API returns a JSON object with details about the failure.
+
+```json
+{
+  "error": {
+    "message": "The model 'invalid-model' does not exist.",
+    "type": "invalid_request_error",
+    "code": "model_not_found"
+  }
+}
+```
+
+## Common Error Scenarios
+
+### Rate Limiting (`429`)
+If you exceed your tier's limits, you will receive a 429 error. We recommend implementing exponential backoff to handle these gracefully.
+
+### Token Limits (`400`)
+If your `messages` array combined with `max_tokens` exceeds the model's context window, the request will fail.
+
+### Invalid Key (`401`)
+Ensure your `Authorization` header is formatted correctly as `Bearer YOUR_API_KEY`.
