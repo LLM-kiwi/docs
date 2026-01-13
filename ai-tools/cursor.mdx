@@ -11,6 +11,42 @@ Use Cursor to help write and maintain your documentation. This guide shows how t
 - Cursor editor installed
 - Access to your documentation repository
 
+## llm.kiwi Integration
+
+Cursor is an AI-first code editor. You can configure it to use llm.kiwi as your model provider, enabling access to premium models at a lower cost.
+
+### 1. Configure llm.kiwi as Provider
+1. Open Cursor Settings (`Ctrl+Shift+J` or `Cmd+Shift+J`).
+2. Navigate to the **Models** section.
+3. Look for the **OpenAI API Key** section (or "Override OpenAI Base URL").
+4. Enter your llm.kiwi API key. Generate one in your [Dashboard](https://llm.kiwi/dashboard/keys).
+5. Set the **Base URL** (sometimes called "Override OpenAI Base URL") to:
+   `https://api.llm.kiwi/v1`
+
+### 2. Adding Custom Models
+Cursor allows you to add custom model names. We recommend adding these models:
+*   `pro`: For high intelligence and complex reasoning.
+*   `fast`: For ultra-low latency routine tasks.
+*   `default`: For general purpose coding assistance.
+
+### 3. Using MCP with Cursor
+Cursor supports the Model Context Protocol (MCP). You can add llm.kiwi as an MCP server to give Cursor tools to perform actions directly via our API.
+
+Edit your `.cursor/mcp.json` (or use the UI in **Features > MCP**):
+
+```json
+{
+  "mcpServers": {
+    "llm-kiwi": {
+      "url": "https://api.llm.kiwi/mcp",
+      "headers": {
+        "Authorization": "Bearer YOUR_API_KEY"
+      }
+    }
+  }
+}
+```
+
 ## Project rules
 
 Create project rules that all team members can use. In your documentation repository root:

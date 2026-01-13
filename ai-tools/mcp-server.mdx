@@ -1,0 +1,77 @@
+---
+title: "MCP Server"
+description: "Power your AI agents with llm.kiwi tools using the Model Context Protocol"
+---
+
+The Model Context Protocol (MCP) is an open standard that enables AI assistants to securely access external tools and data. llm.kiwi provides a hosted MCP server to seamlessly integrate our capabilities into your favorite AI environments.
+
+## Connection Details
+
+Our MCP server is available at the following endpoint:
+
+```bash
+https://api.llm.kiwi/mcp
+```
+
+## Available Tools
+
+The MCP server exposes several tools that AI agents can use to perform complex tasks.
+
+<AccordionGroup>
+  <Accordion title="chat_completion" icon="message-bot">
+    Generate text using llm.kiwi chat models.
+    *   **Parameters**: `messages` (array), `model` (optional string), `temperature` (optional number)
+  </Accordion>
+  <Accordion title="image_generation" icon="image">
+    Generate images from text descriptions.
+    *   **Parameters**: `prompt` (string), `size` (optional string)
+  </Accordion>
+  <Accordion title="audio_transcription" icon="microphone">
+    Transcribe audio files from a URL.
+    *   **Parameters**: `file_url` (string), `language` (optional string)
+  </Accordion>
+</AccordionGroup>
+
+## Resources
+
+Agents can also access static and dynamic resources via the following URIs:
+
+*   `models://list`: A list of available models and their descriptions.
+*   `docs://api`: Comprehensive API documentation in Markdown format.
+*   `usage://current`: Real-time usage statistics for your API key.
+
+## Installation Examples
+
+### Cursor
+Add to your `.cursor/mcp.json`:
+```json
+{
+  "mcpServers": {
+    "llm-kiwi": {
+      "url": "https://api.llm.kiwi/mcp",
+      "headers": {
+        "Authorization": "Bearer YOUR_API_KEY"
+      }
+    }
+  }
+}
+```
+
+### Claude Desktop
+Add to your `claude_desktop_config.json`:
+```json
+{
+  "mcpServers": {
+    "llm-kiwi": {
+      "command": "npx",
+      "args": ["-y", "@llm-kiwi/mcp-server"],
+      "env": {
+        "LLM_KIWI_API_KEY": "YOUR_API_KEY"
+      }
+    }
+  }
+}
+```
+
+## Security
+The MCP server uses the same API keys as the REST API. Ensure your keys are kept secure and never shared.
