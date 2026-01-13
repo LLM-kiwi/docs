@@ -11,16 +11,14 @@
   "navigation": {
     "tabs": [
       {
-        "tab": "Guides",
+        "tab": "Docs",
         "groups": [
           {
-            "group": "Getting started",
+            "group": "Getting Started",
             "pages": [
               "index",
               "quickstart",
-              "essentials/authentication",
-              "essentials/models",
-              "essentials/rate-limits"
+              "essentials/authentication"
             ]
           },
           {
@@ -33,7 +31,14 @@
             ]
           },
           {
-            "group": "AI Tools & IDEs",
+            "group": "SDKs & Languages",
+            "pages": [
+              "sdks/nodejs",
+              "sdks/python"
+            ]
+          },
+          {
+            "group": "Agentic & IDEs",
             "pages": [
               "ai-tools/cursor",
               "ai-tools/windsurf",
@@ -43,8 +48,10 @@
             ]
           },
           {
-            "group": "Resources",
+            "group": "Platform",
             "pages": [
+              "essentials/models",
+              "essentials/rate-limits",
               "essentials/free-tier"
             ]
           }
@@ -85,15 +92,15 @@
   },
   "contextual": {
     "options": [
-     "copy",
-     "view",
-     "chatgpt",
-     "claude",
-     "perplexity",
-     "mcp",
-     "cursor",
-     "vscode"
-   ]
+      "copy",
+      "view",
+      "chatgpt",
+      "claude",
+      "perplexity",
+      "mcp",
+      "cursor",
+      "vscode"
+    ]
   },
   "footer": {
     "socials": {

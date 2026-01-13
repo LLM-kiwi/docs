@@ -1,80 +1,91 @@
 ---
 title: "Quickstart"
-description: "Start building awesome documentation in minutes"
+description: "Start building with the llm.kiwi API in under a minute"
 ---
+
+Welcome! This guide will help you get your first response from the llm.kiwi API.
 
 ## Get started in three steps
 
-Get your documentation site running locally and make your first customization.
+Follow these steps to integrate professional-grade AI into your application.
 
-### Step 1: Set up your local environment
+### Step 1: Create your API Key
 
-<AccordionGroup>
-  <Accordion icon="copy" title="Clone your docs locally">
-    During the onboarding process, you created a GitHub repository with your docs content if you didn't already have one. You can find a link to this repository in your [dashboard](https://dashboard.mintlify.com).
-    
-    To clone the repository locally so that you can make and preview changes to your docs, follow the [Cloning a repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository) guide in the GitHub docs.
-  </Accordion>
-  <Accordion icon="rectangle-terminal" title="Start the preview server">
-    1. Install the Mintlify CLI: `npm i -g mint`
-    2. Navigate to your docs directory and run: `mint dev`
-    3. Open `http://localhost:3000` to see your docs live!
-    
-    <Tip>Your preview updates automatically as you edit files.</Tip>
-  </Accordion>
-</AccordionGroup>
+Go to the [llm.kiwi Dashboard](https://llm.kiwi/dashboard) and sign in (using Google). Navigate to the **API Keys** section and generate a new key.
 
-### Step 2: Deploy your changes
+> [!IMPORTANT]
+> Your API key is shown only once. Copy it and store it securely in your environment variables.
 
-<AccordionGroup>
-  <Accordion icon="github" title="Install our GitHub app">
-    Install the Mintlify GitHub app from your [dashboard](https://dashboard.mintlify.com/settings/organization/github-app).
-    
-    Our GitHub app automatically deploys your changes to your docs site, so you don't need to manage deployments yourself.
-</Accordion>
-<Accordion icon="palette" title="Update your site name and colors">
-    For a first change, let's update the name and colors of your docs site.
+### Step 2: Choose your SDK
 
-    1. Open `docs.json` in your editor.
-    2. Change the `"name"` field to your project name.
-    3. Update the `"colors"` to match your brand.
-    4. Save and see your changes instantly at `http://localhost:3000`.
+llm.kiwi is fully compatible with the official OpenAI SDKs. This means you can use existing libraries in your favorite language.
 
-    <Tip>Try changing the primary color to see an immediate difference!</Tip>
-  </Accordion>
-</AccordionGroup>
+<CodeGroup>
+```bash Node.js
+npm install openai
+```
+```bash Python
+pip install openai
+```
+```bash PHP
+composer require openai-php/client
+```
+</CodeGroup>
 
-### Step 3: Go live
+### Step 3: Make your first request
 
-<Accordion icon="rocket" title="Publish your docs">
-  1. Commit and push your changes.
-  2. Your docs will update and be live in moments!
-</Accordion>
+Configure the client with our base URL and your key, then run the code to get a response from our `fast` model.
+
+<CodeGroup>
+```javascript Node.js
+import OpenAI from 'openai';
+
+const client = new OpenAI({
+  baseURL: 'https://api.llm.kiwi/v1',
+  apiKey: process.env.LLM_KIWI_API_KEY
+});
+
+const response = await client.chat.completions.create({
+  model: 'fast',
+  messages: [{ role: 'user', content: 'Say hello in a professional way!' }]
+});
+
+console.log(response.choices[0].message.content);
+```
+
+```python Python
+from openai import OpenAI
+import os
+
+client = OpenAI(
+    base_url="https://api.llm.kiwi/v1",
+    api_key=os.environ.get("LLM_KIWI_API_KEY")
+)
+
+response = client.chat.completions.create(
+    model="fast",
+    messages=[{"role": "user", "content": "Say hello in a professional way!"}]
+)
+
+print(response.choices[0].message.content)
+```
+</CodeGroup>
 
 ## Next steps
 
-Now that you have your docs running, explore these key features:
+Now that you've made your first request, explore our detailed documentation:
 
 <CardGroup cols={2}>
-
-<Card title="Write Content" icon="pen-to-square" href="/essentials/markdown">
-  Learn MDX syntax and start writing your documentation.
-</Card>
-
-<Card title="Customize style" icon="palette" href="/essentials/settings">
-  Make your docs match your brand perfectly.
-</Card>
-
-<Card title="Add code examples" icon="square-code" href="/essentials/code">
-  Include syntax-highlighted code blocks.
-</Card>
-
-<Card title="API documentation" icon="code" href="/api-reference/introduction">
-  Auto-generate API docs from OpenAPI specs.
-</Card>
-
+  <Card title="Available Models" icon="gears" href="/essentials/models">
+    Learn about the differences between `pro`, `fast`, and `default`.
+  </Card>
+  <Card title="Authentication" icon="key" href="/essentials/authentication">
+    Best practices for securing your API keys.
+  </Card>
+  <Card title="Image Generation" icon="image" href="/api-reference/image-generation">
+    Start generating visuals with Flux.
+  </Card>
+  <Card title="IDE Integration" icon="code" href="/ai-tools/cursor">
+    Configure Cursor or Windsurf with llm.kiwi.
+  </Card>
 </CardGroup>
-
-<Note>
-  **Need help?** See our [full documentation](https://mintlify.com/docs) or join our [community](https://mintlify.com/community).
-</Note>

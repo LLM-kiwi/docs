@@ -1,0 +1,78 @@
+---
+title: "Python"
+description: "Professional AI integration for your Python projects"
+---
+
+Integrate llm.kiwi into your Python backend using the industry-standard OpenAI library.
+
+## Installation
+
+```bash
+pip install openai
+```
+
+## Setup
+
+Set your API key as an environment variable for security:
+
+```bash
+export LLM_KIWI_API_KEY='sk-...'
+```
+
+## Basic Usage
+
+```python
+from openai import OpenAI
+import os
+
+client = OpenAI(
+    api_key=os.environ.get("LLM_KIWI_API_KEY"),
+    base_url="https://api.llm.kiwi/v1"
+)
+
+response = client.chat.completions.create(
+    model="pro",
+    messages=[
+        {"role": "system", "content": "You are a helpful assistant."},
+        {"role": "user", "content": "How do I make a perfect kiwi smoothie?"}
+    ]
+)
+
+print(response.choices[0].message.content)
+```
+
+## Advanced Configuration
+
+You can configure timeouts and retries directly in the client:
+
+```python
+client = OpenAI(
+    api_key="YOUR_KEY",
+    base_url="https://api.llm.kiwi/v1",
+    timeout=20.0,
+    max_retries=3
+)
+```
+
+## Async Usage
+
+For high-concurrency applications, use the `AsyncOpenAI` client:
+
+```python
+import asyncio
+from openai import AsyncOpenAI
+
+async_client = AsyncOpenAI(
+    api_key="YOUR_KEY",
+    base_url="https://api.llm.kiwi/v1"
+)
+
+async def main():
+    response = await async_client.chat.completions.create(
+        model="fast",
+        messages=[{"role": "user", "content": "Hello!"}]
+    )
+    print(response.choices[0].message.content)
+
+asyncio.run(main())
+```

@@ -1,0 +1,65 @@
+---
+title: "Node.js"
+description: "Integrate llm.kiwi into your Node.js or JavaScript applications"
+---
+
+The most common way to use llm.kiwi in Node.js is through the official OpenAI library, as our API is fully compatible.
+
+## Installation
+
+```bash
+npm install openai
+```
+
+## Basic Usage
+
+Initialize the client with your API key and our custom base URL.
+
+```javascript
+import OpenAI from 'openai';
+
+const client = new OpenAI({
+  apiKey: process.env.LLM_KIWI_API_KEY,
+  baseURL: 'https://api.llm.kiwi/v1'
+});
+
+async function main() {
+  const completion = await client.chat.completions.create({
+    messages: [{ role: 'user', content: 'Explain quantum computing in one sentence.' }],
+    model: 'pro',
+  });
+
+  console.log(completion.choices[0].message.content);
+}
+
+main();
+```
+
+## Streaming
+
+For real-time responses, use the streaming feature.
+
+```javascript
+const stream = await client.chat.completions.create({
+  model: 'fast',
+  messages: [{ role: 'user', content: 'Write a long poem about kiwis.' }],
+  stream: true,
+});
+
+for await (const chunk of stream) {
+  process.stdout.write(chunk.choices[0]?.delta?.content || '');
+}
+```
+
+## TypeScript Configuration
+
+If you're using TypeScript, the types from the `openai` package will work out of the box.
+
+```typescript
+import { OpenAI } from 'openai';
+
+const client: OpenAI = new OpenAI({
+  apiKey: 'YOUR_KEY',
+  baseURL: 'https://api.llm.kiwi/v1'
+});
+```
