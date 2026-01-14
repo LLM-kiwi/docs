@@ -9,18 +9,18 @@ All requests to the llm.kiwi API must be authenticated using an API key. This en
 
 Your API keys are the primary way to authenticate with llm.kiwi. You can manage your keys in the [Developer Dashboard](https://llm.kiwi/dashboard/keys).
 
-> [!WARNING]
-> Keep your API keys confidential. Do not share them in public repositories, client-side code, or insecure environments.
+> [!WARNING] Keep your API keys confidential. Do not share them in public repositories, client-side code, or insecure environments.
 
 ### Key Format
-llm.kiwi API keys follow a standard format:
-`sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx`
+
+llm.kiwi API keys follow a standard format: `sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx`
 
 ## Using Your API Key
 
 Include your API key in the `Authorization` header of every HTTP request.
 
 ### Authorization Header
+
 The API uses the standard Bearer token authentication scheme.
 
 ```bash
@@ -30,6 +30,7 @@ Authorization: Bearer YOUR_API_KEY
 ### Examples
 
 <CodeGroup>
+
 ```bash cURL
 curl https://api.llm.kiwi/v1/chat/completions \
   -H "Authorization: Bearer YOUR_API_KEY" \
@@ -39,6 +40,7 @@ curl https://api.llm.kiwi/v1/chat/completions \
     "messages": [{"role": "user", "content": "Hello!"}]
   }'
 ```
+
 
 ```python Python
 from openai import OpenAI
@@ -54,6 +56,7 @@ response = client.chat.completions.create(
 )
 ```
 
+
 ```javascript Node.js
 import OpenAI from 'openai';
 
@@ -67,23 +70,24 @@ const response = await client.chat.completions.create({
   messages: [{ role: 'user', content: 'Hello!' }]
 });
 ```
+
 </CodeGroup>
 
 ## Security Best Practices
 
 To keep your account and data secure, follow these industry-standard security practices:
 
-*   **Environment Variables**: Never hardcode API keys. Use `.env` files or secret management systems.
-*   **Server-Side Only**: Access the API from your backend. Client-side requests expose your key to users.
-*   **Key Rotation**: Delete and regenerate keys periodically to minimize the impact of potential leaks.
-*   **Scoped Access**: Use different keys for development, staging, and production environments.
+- **Environment Variables**: Never hardcode API keys. Use `.env` files or secret management systems.
+- **Server-Side Only**: Access the API from your backend. Client-side requests expose your key to users.
+- **Key Rotation**: Delete and regenerate keys periodically to minimize the impact of potential leaks.
+- **Scoped Access**: Use different keys for development, staging, and production environments.
 
 ## Authentication Errors
 
 If there is an issue with your credentials, the API will return a `401 Unauthorized` response.
 
-| Error Code | Description |
-| :--- | :--- |
-| `invalid_api_key` | The key provided is not recognized by the system. |
+| Error Code        | Description                                                      |
+| :---------------- | :--------------------------------------------------------------- |
+| `invalid_api_key` | The key provided is not recognized by the system.                |
 | `expired_api_key` | The API key has reached its expiration date or has been revoked. |
-| `missing_api_key` | No key was provided in the Authorization header. |
+| `missing_api_key` | No key was provided in the Authorization header.                 |

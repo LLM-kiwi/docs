@@ -9,6 +9,26 @@
   },
   "favicon": "/favicon.svg",
   "navigation": {
+    "global": {
+      "anchors": [
+        {
+          "anchor": "LLMkiwi Main Page",
+          "icon": "house",
+          "href": "https://llm.kiwi"
+        },
+        {
+          "anchor": "LLMkiwi Dashboard",
+          "icon": "gauge-high",
+          "href": "https://llm.kiwi/dashboard"
+        },
+        {
+          "anchor": "Support",
+          "icon": "headset",
+          "hidden": true,
+          "href": "mailto:hello@llm.kiwi"
+        }
+      ]
+    },
     "tabs": [
       {
         "tab": "Docs",
@@ -18,7 +38,8 @@
             "pages": [
               "index",
               "quickstart",
-              "essentials/authentication"
+              "essentials/authentication",
+              "essentials/free-tier-copied-1"
             ]
           },
           {
@@ -28,6 +49,14 @@
               "api-reference/image-generation",
               "api-reference/audio-transcription",
               "api-reference/errors"
+            ]
+          },
+          {
+            "group": "Platform",
+            "pages": [
+              "essentials/models",
+              "essentials/rate-limits",
+              "essentials/free-tier"
             ]
           },
           {
@@ -48,14 +77,6 @@
             ]
           },
           {
-            "group": "Platform",
-            "pages": [
-              "essentials/models",
-              "essentials/rate-limits",
-              "essentials/free-tier"
-            ]
-          },
-          {
             "group": "Showcase",
             "pages": [
               "showcase"
@@ -63,26 +84,7 @@
           }
         ]
       }
-    ],
-    "global": {
-      "anchors": [
-        {
-          "anchor": "Main Page",
-          "href": "https://llm.kiwi",
-          "icon": "house"
-        },
-        {
-          "anchor": "Dashboard",
-          "href": "https://llm.kiwi/dashboard",
-          "icon": "gauge-high"
-        },
-        {
-          "anchor": "Support",
-          "href": "mailto:hello@llm.kiwi",
-          "icon": "headset"
-        }
-      ]
-    }
+    ]
   },
   "logo": {
     "light": "/logo/full.svg",
