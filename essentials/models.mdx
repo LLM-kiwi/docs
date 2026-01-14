@@ -5,9 +5,9 @@ description: "High-performance AI models tailored for your specific needs"
 
 llm.kiwi offers a curated selection of models optimized for speed, intelligence, and cost-efficiency. By abstracting complex model names, we provide a stable interface that always leverages the best available technology.
 
-## Model Tiers
+## Core Models
 
-We offer three primary tiers to balance performance and latency.
+These are our recommended models for most users. They are automatically routed to the best underlying architecture.
 
 <CardGroup cols={3}>
   <Card title="Pro" icon="stars">
@@ -21,13 +21,35 @@ We offer three primary tiers to balance performance and latency.
   </Card>
 </CardGroup>
 
-## Model Details
+## Chat Models
 
-| Slug | Best For | Typical Latency |
-| :--- | :--- | :--- |
-| `pro` | Advanced coding, complex reasoning, long-form writing | Moderate |
-| `fast` | Real-time chat, simple extraction, basic classification | Ultra-low |
-| `default` | General purpose tasks, summarization, conversational AI | Low |
+Our chat models are designed for conversational AI, coding, and reasoning.
+
+| ID | Provider | Tier | Description |
+| :--- | :--- | :--- | :--- |
+| `default` | llm.kiwi | Free | Auto-select best model for your request |
+| `fast` | llm.kiwi | Free | Low latency speed optimized |
+| `pro` | llm.kiwi | Pro | High capability model routing |
+| `gpt-4.1-nano-*` | OpenAI | Pro | GPT-4.1 Nano - Fast and efficient |
+| `gpt-5-mini` | OpenAI | Pro | GPT-5 Mini - Advanced reasoning |
+| `deepseek-v3.1` | DeepSeek | Pro | Excellent for coding |
+| `mistral-small-3.1-*` | Mistral | Pro | Balanced performance |
+| `codestral-*` | Mistral | Pro | Code generation specialist |
+| `ministral-8b-*` | Mistral | Pro | Compact and fast |
+| `meta-llama/*` | Meta | Pro | Open source power |
+| `gemini-2.5-flash-lite` | Google | Free | Ultra fast reasoning |
+| `gemini-search` | Google | Pro | Web-grounded responses |
+| `glm-4.5-flash` | Zhipu | Pro | Chinese/English bilingual |
+| `bidara` | Bidara | Free | Biomimicry design assistant |
+
+## Image & Media Models
+
+State-of-the-art models for creative and multimodal tasks.
+
+| ID | Provider | Tier | Description |
+| :--- | :--- | :--- | :--- |
+| `flux` | Flux | Pro | High quality image generation |
+| `whisper` | OpenAI | Pro | Industry-standard speech to text |
 
 ## Model Updates
 
