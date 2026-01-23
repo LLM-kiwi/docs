@@ -1,59 +1,84 @@
 ---
 title: "Available Models"
-description: "High-performance AI models tailored for your specific needs"
+description: "AI models available on llm.kiwi by tier"
 ---
 
-llm.kiwi offers a curated selection of models optimized for speed, intelligence, and cost-efficiency. By abstracting complex model names, we provide a stable interface that always leverages the best available technology.
+llm.kiwi provides access to a curated selection of high-performance AI models. Model availability depends on your subscription tier.
 
-## Core Models
+## Free Tier
 
-These are our recommended models for most users. They are automatically routed to the best underlying architecture.
+The Free tier includes access to a single routing model:
 
-<CardGroup cols={3}>
-  <Card title="Pro" icon="stars">
-    The most capable model for complex reasoning and creative tasks.
-  </Card>
-  <Card title="Fast" icon="bolt">
-    Highly optimized for latency and quick interactions.
-  </Card>
-  <Card title="Default" icon="gears">
-    The standard balance of speed and capability for general use.
+<CardGroup cols={1}>
+  <Card title="default" icon="gears">
+    Intelligent model router that selects the best model for your request automatically.
   </Card>
 </CardGroup>
 
-## Chat Models
+| Model ID | Description |
+| :--- | :--- |
+| `default` | Auto-routing model — balances quality and speed for each request |
 
-Our chat models are designed for conversational AI, coding, and reasoning.
+<Note>
+  Free tier users **must** use `model="default"`. This model intelligently routes your requests to appropriate underlying models.
+</Note>
 
-| ID | Provider | Tier | Description |
+---
+
+## Pro Tier Models
+
+Pro tier unlocks direct access to specific high-performance models:
+
+### Chat & Reasoning Models
+
+| Model ID | Provider | Description |
+| :--- | :--- | :--- |
+| `gpt-oss-20b` | OpenAI OSS | 20B parameter open-source GPT variant |
+| `gpt-oss:20b` | OpenAI OSS | Alternative syntax for gpt-oss-20b |
+| `mistral-small-3.1-24b-instruct-2503` | Mistral | 24B instruction-tuned model |
+| `meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo` | Meta | Llama 3.1 8B optimized for speed |
+| `deepseek-v3.1:671b-terminus` | DeepSeek | 671B MoE model, excellent for coding |
+| `gemini-2.5-flash-lite` | Google | Ultra-fast reasoning model |
+| `GLM-4.6V-Flash` | Zhipu | Fast Chinese/English bilingual |
+| `bidara` | Bidara | Biomimicry design assistant |
+
+### Code Models
+
+| Model ID | Provider | Description |
+| :--- | :--- | :--- |
+| `codestral-2405` | Mistral | Code generation (May 2024 release) |
+| `codestral-2501` | Mistral | Code generation (Jan 2025 release) |
+| `ministral-8b-2512` | Mistral | Compact 8B model for fast responses |
+
+---
+
+---
+
+## Image & Audio Models
+
+| Model ID | Provider | Tier | Description |
 | :--- | :--- | :--- | :--- |
-| `default` | llm.kiwi | Free | Auto-select best model for your request |
-| `fast` | llm.kiwi | Free | Low latency speed optimized |
-| `pro` | llm.kiwi | Pro | High capability model routing |
-| `gpt-4.1-nano-*` | OpenAI | Pro | GPT-4.1 Nano - Fast and efficient |
-| `gpt-5-mini` | OpenAI | Pro | GPT-5 Mini - Advanced reasoning |
-| `deepseek-v3.1` | DeepSeek | Pro | Excellent for coding |
-| `mistral-small-3.1-*` | Mistral | Pro | Balanced performance |
-| `codestral-*` | Mistral | Pro | Code generation specialist |
-| `ministral-8b-*` | Mistral | Pro | Compact and fast |
-| `meta-llama/*` | Meta | Pro | Open source power |
-| `gemini-2.5-flash-lite` | Google | Free | Ultra fast reasoning |
-| `gemini-search` | Google | Pro | Web-grounded responses |
-| `glm-4.5-flash` | Zhipu | Pro | Chinese/English bilingual |
-| `bidara` | Bidara | Free | Biomimicry design assistant |
+| `flux` | Flux | Pro | High-quality image generation |
+| `whisper-1` | OpenAI | Pro | Speech-to-text transcription |
 
-## Image & Media Models
+---
 
-State-of-the-art models for creative and multimodal tasks.
+## Choosing a Model
 
-| ID | Provider | Tier | Description |
-| :--- | :--- | :--- | :--- |
-| `flux` | Flux | Pro | High quality image generation |
-| `whisper` | OpenAI | Pro | Industry-standard speech to text |
+<Tip>
+  **Not sure which model to use?** Start with `default` — it automatically routes to the best model for your use case.
+</Tip>
 
-## Model Updates
+| Use Case | Recommended Model |
+| :--- | :--- |
+| General chat | `default` or `gpt-oss-20b` |
+| Complex coding | `deepseek-v3.1:671b-terminus` or `codestral-2501` |
+| Fast responses | `gemini-2.5-flash-lite` or `ministral-8b-2512` |
+| Chinese/English | `GLM-4.6V-Flash` |
 
-We continuously evaluate and update the underlying architecture of our models. Using the static slugs (`pro`, `fast`, `default`) ensures that your integration remains stable while automatically benefiting from the latest AI advancements.
+---
 
-> [!TIP]
-> Use the `pro` model for tasks requiring high precision, and switch to `fast` for UI-critical elements where speed is paramount.
+<Card title="Upgrade to Pro" icon="crown" href="https://llm.kiwi/pricing" horizontal>
+  Unlock all Pro models and higher rate limits.
+</Card>
+

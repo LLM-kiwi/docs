@@ -26,7 +26,7 @@ const client = new OpenAI({
 async function main() {
   const completion = await client.chat.completions.create({
     messages: [{ role: 'user', content: 'Explain quantum computing in one sentence.' }],
-    model: 'pro',
+    model: 'default',
   });
 
   console.log(completion.choices[0].message.content);
@@ -41,7 +41,7 @@ For real-time responses, use the streaming feature.
 
 ```javascript
 const stream = await client.chat.completions.create({
-  model: 'fast',
+  model: 'default',
   messages: [{ role: 'user', content: 'Write a long poem about kiwis.' }],
   stream: true,
 });

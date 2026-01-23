@@ -15,7 +15,7 @@ POST https://api.llm.kiwi/v1/chat/completions
 
 | Parameter | Type | Required | Description |
 | :--- | :--- | :--- | :--- |
-| `model` | string | Yes | Model identifier: `pro`, `fast`, or `default`. |
+| `model` | string | Yes | Model ID: `default` (Free), or any Pro model (e.g. `gpt-oss-20b`). |
 | `messages` | array | Yes | Conversation history as message objects. |
 | `stream` | boolean | No | Enable streaming responses. Default: `false`. |
 | `temperature` | number | No | Sampling temperature (0-2). Default: `1`. |
@@ -56,7 +56,7 @@ client = OpenAI(
 )
 
 response = client.chat.completions.create(
-    model="fast",
+    model="default",
     messages=[{"role": "user", "content": "Hello!"}]
 )
 
@@ -72,7 +72,7 @@ const client = new OpenAI({
 });
 
 const response = await client.chat.completions.create({
-  model: 'fast',
+  model: 'default',
   messages: [{ role: 'user', content: 'Hello!' }]
 });
 
@@ -86,7 +86,7 @@ Enable streaming for real-time token delivery:
 
 ```python Python
 stream = client.chat.completions.create(
-    model="fast",
+    model="default",
     messages=[{"role": "user", "content": "Tell me a story."}],
     stream=True
 )
@@ -103,7 +103,7 @@ for chunk in stream:
   "id": "chatcmpl-abc123",
   "object": "chat.completion",
   "created": 1706745600,
-  "model": "pro",
+  "model": "gpt-oss-20b",
   "choices": [
     {
       "index": 0,

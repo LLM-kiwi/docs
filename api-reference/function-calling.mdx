@@ -47,7 +47,7 @@ tools = [
 ]
 
 response = client.chat.completions.create(
-    model="pro",
+    model="gpt-oss-20b",
     messages=[{"role": "user", "content": "What's the weather in Paris?"}],
     tools=tools
 )
@@ -117,7 +117,7 @@ if message.tool_calls:
     
     # Get final response
     final = client.chat.completions.create(
-        model="pro",
+        model="gpt-oss-20b",
         messages=messages,
         tools=tools
     )
@@ -147,7 +147,7 @@ tools = [
 ]
 
 response = client.chat.completions.create(
-    model="pro",
+    model="gpt-oss-20b",
     messages=[{"role": "user", "content": "Compare AAPL and GOOGL prices"}],
     tools=tools
 )
@@ -171,7 +171,7 @@ Use `tool_choice` to control function calling behavior:
 ```python Python
 # Force a specific function
 response = client.chat.completions.create(
-    model="pro",
+    model="gpt-oss-20b",
     messages=[{"role": "user", "content": "Get me info"}],
     tools=tools,
     tool_choice={"type": "function", "function": {"name": "get_weather"}}

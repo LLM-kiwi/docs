@@ -29,7 +29,7 @@ def chat(user_input: str) -> str:
     
     # Get response
     response = client.chat.completions.create(
-        model="fast",
+        model="default",
         messages=messages
     )
     
@@ -56,7 +56,7 @@ def chat_stream(user_input: str):
     messages.append({"role": "user", "content": user_input})
     
     stream = client.chat.completions.create(
-        model="fast",
+        model="default",
         messages=messages,
         stream=True
     )
@@ -91,7 +91,7 @@ async function chat(userInput) {
   messages.push({ role: 'user', content: userInput });
   
   const response = await client.chat.completions.create({
-    model: 'fast',
+    model: 'default',
     messages
   });
   
@@ -106,7 +106,7 @@ async function chatStream(userInput) {
   messages.push({ role: 'user', content: userInput });
   
   const stream = await client.chat.completions.create({
-    model: 'fast',
+    model: 'default',
     messages,
     stream: true
   });
@@ -160,7 +160,7 @@ def chat_with_retry(user_input: str, max_retries: int = 3) -> str:
     for attempt in range(max_retries):
         try:
             response = client.chat.completions.create(
-                model="fast",
+                model="default",
                 messages=messages
             )
             assistant_message = response.choices[0].message.content

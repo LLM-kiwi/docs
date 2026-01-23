@@ -46,7 +46,7 @@ const client = new OpenAI({
 });
 
 const response = await client.chat.completions.create({
-  model: 'fast',
+  model: 'default',
   messages: [{ role: 'user', content: 'Say hello in a professional way!' }]
 });
 
@@ -63,7 +63,7 @@ client = OpenAI(
 )
 
 response = client.chat.completions.create(
-    model="fast",
+    model="default",
     messages=[{"role": "user", "content": "Say hello in a professional way!"}]
 )
 

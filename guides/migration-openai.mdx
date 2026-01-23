@@ -51,10 +51,10 @@ Map OpenAI models to llm.kiwi equivalents:
 
 | OpenAI Model | llm.kiwi Equivalent | Notes |
 | :--- | :--- | :--- |
-| `gpt-4` | `pro` | Highest capability |
-| `gpt-4-turbo` | `pro` | Same routing |
-| `gpt-3.5-turbo` | `fast` | Speed optimized |
-| `gpt-4o-mini` | `fast` | Efficient alternative |
+| `gpt-4` | `gpt-oss-20b` | High capability open variant |
+| `gpt-4-turbo` | `gpt-oss-20b` | Balanced performance |
+| `gpt-3.5-turbo` | `default` | Fast routing |
+| `gpt-4o-mini` | `default` | Model-lite routing |
 
 <Tip>
   Use llm.kiwi's `default` model to let our router automatically select the best model for each request.
@@ -108,7 +108,7 @@ from langchain_openai import ChatOpenAI
 llm = ChatOpenAI(
     base_url="https://api.llm.kiwi/v1",
     api_key="your-llm-kiwi-key",
-    model="pro"
+    model="gpt-oss-20b"
 )
 ```
 
@@ -120,7 +120,7 @@ from llama_index.llms.openai import OpenAI
 llm = OpenAI(
     api_base="https://api.llm.kiwi/v1",
     api_key="your-llm-kiwi-key",
-    model="pro"
+    model="gpt-oss-20b"
 )
 ```
 
@@ -142,14 +142,14 @@ Verify your migration works correctly:
 ```python Python
 # Test basic functionality
 response = client.chat.completions.create(
-    model="fast",
+    model="default",
     messages=[{"role": "user", "content": "Hello, is this working?"}]
 )
 print("✅ Basic request:", response.choices[0].message.content[:50])
 
 # Test streaming
 stream = client.chat.completions.create(
-    model="fast",
+    model="default",
     messages=[{"role": "user", "content": "Count to 3"}],
     stream=True
 )
@@ -164,11 +164,9 @@ print("🎉 Migration successful!")
 
 ## Common Issues
 
-### "Model not found"
-
 OpenAI model names don't work directly. Use llm.kiwi models:
-- `gpt-4` → `pro`
-- `gpt-3.5-turbo` → `fast`
+- `gpt-4` → `gpt-oss-20b` (or other Pro models)
+- `gpt-3.5-turbo` → `default`
 
 ### Missing features
 

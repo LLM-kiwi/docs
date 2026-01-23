@@ -31,7 +31,7 @@ client = OpenAI(
 )
 
 response = client.chat.completions.create(
-    model="pro",
+    model="default",
     messages=[
         {"role": "system", "content": "You are a helpful assistant."},
         {"role": "user", "content": "How do I make a perfect kiwi smoothie?"}
@@ -69,7 +69,7 @@ async_client = AsyncOpenAI(
 
 async def main():
     response = await async_client.chat.completions.create(
-        model="fast",
+        model="default",
         messages=[{"role": "user", "content": "Hello!"}]
     )
     print(response.choices[0].message.content)

@@ -22,7 +22,7 @@ client = OpenAI(
 )
 
 response = client.chat.completions.create(
-    model="pro",
+    model="gpt-oss-20b",
     response_format={"type": "json_object"},
     messages=[
         {"role": "system", "content": "Extract data as JSON."},
@@ -62,7 +62,7 @@ You are a data extraction assistant. Always respond with valid JSON matching thi
 
 ```python Python
 response = client.chat.completions.create(
-    model="pro",
+    model="gpt-oss-20b",
     response_format={"type": "json_object"},
     messages=[
         {
@@ -79,7 +79,7 @@ response = client.chat.completions.create(
 
 ```python Python
 response = client.chat.completions.create(
-    model="pro",
+    model="gpt-oss-20b",
     response_format={"type": "json_object"},
     messages=[
         {

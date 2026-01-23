@@ -71,7 +71,7 @@ client = OpenAI(
 
 # Make a chat completion request
 response = client.chat.completions.create(
-    model="fast",
+    model="default",
     messages=[
         {"role": "user", "content": "Hello! What can you help me with?"}
     ]
@@ -92,7 +92,7 @@ const client = new OpenAI({
 
 // Make a chat completion request
 const response = await client.chat.completions.create({
-  model: 'fast',
+  model: 'default',
   messages: [
     { role: 'user', content: 'Hello! What can you help me with?' }
   ]
@@ -107,7 +107,7 @@ curl https://api.llm.kiwi/v1/chat/completions \
   -H "Authorization: Bearer $LLM_KIWI_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
-    "model": "fast",
+    "model": "default",
     "messages": [{"role": "user", "content": "Hello!"}]
   }'
 ```
