@@ -5,33 +5,32 @@
   "colors": {
     "primary": "#16A34A",
     "light": "#07C983",
-    "dark": "#15803D"
+    "dark": "#0F172A"
   },
   "favicon": "/favicon.svg",
   "navigation": {
     "global": {
       "anchors": [
         {
-          "anchor": "LLMkiwi Main Page",
+          "anchor": "LLM.kiwi",
           "icon": "house",
           "href": "https://llm.kiwi"
         },
         {
-          "anchor": "LLMkiwi Dashboard",
+          "anchor": "Dashboard",
           "icon": "gauge-high",
           "href": "https://llm.kiwi/dashboard"
         },
         {
-          "anchor": "Support",
-          "icon": "headset",
-          "hidden": true,
-          "href": "mailto:hello@llm.kiwi"
+          "anchor": "Status",
+          "icon": "signal",
+          "href": "https://status.llm.kiwi"
         }
       ]
     },
     "tabs": [
       {
-        "tab": "Docs",
+        "tab": "Documentation",
         "groups": [
           {
             "group": "Getting Started",
@@ -39,13 +38,15 @@
               "index",
               "quickstart",
               "essentials/authentication",
-              "essentials/free-tier-copied-2"
+              "essentials/models"
             ]
           },
           {
             "group": "API Reference",
             "pages": [
               "api-reference/chat-completions",
+              "api-reference/json-mode",
+              "api-reference/function-calling",
               "api-reference/image-generation",
               "api-reference/audio-transcription",
               "api-reference/errors"
@@ -54,9 +55,19 @@
           {
             "group": "Platform",
             "pages": [
-              "essentials/models",
+              "essentials/features",
               "essentials/rate-limits",
-              "essentials/free-tier"
+              "essentials/free-tier",
+              "essentials/apps",
+              "essentials/sponsorship"
+            ]
+          },
+          {
+            "group": "Guides",
+            "pages": [
+              "guides/quickstart-first-call",
+              "guides/building-chatbot",
+              "guides/migration-openai"
             ]
           },
           {
@@ -67,7 +78,7 @@
             ]
           },
           {
-            "group": "Agentic & IDEs",
+            "group": "IDE Integrations",
             "pages": [
               "ai-tools/cursor",
               "ai-tools/windsurf",
@@ -77,9 +88,17 @@
             ]
           },
           {
-            "group": "Showcase",
+            "group": "Resources",
             "pages": [
-              "showcase"
+              "showcase",
+              "resources/contact"
+            ]
+          },
+          {
+            "group": "Legal",
+            "pages": [
+              "legal/privacy",
+              "legal/terms"
             ]
           }
         ]
@@ -93,17 +112,21 @@
   "navbar": {
     "links": [
       {
+        "label": "Pricing",
+        "href": "https://llm.kiwi/pricing"
+      },
+      {
         "label": "Showcase",
         "href": "/showcase"
       },
       {
         "label": "Support",
-        "href": "mailto:hello@llm.kiwi"
+        "href": "mailto:support@llm.kiwi"
       }
     ],
     "primary": {
       "type": "button",
-      "label": "Dashboard",
+      "label": "Get API Key",
       "href": "https://llm.kiwi/dashboard"
     }
   },

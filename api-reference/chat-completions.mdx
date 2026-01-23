@@ -1,9 +1,9 @@
 ---
 title: "Chat Completions"
-description: "Generate natural language responses using high-performance AI models"
+description: "Generate intelligent text responses using state-of-the-art AI models"
 ---
 
-The Chat Completions API allows you to generate text responses based on a list of messages. This is the primary interface for building chatbots, virtual assistants, and text generation tools.
+The Chat Completions API is your primary interface for building chatbots, virtual assistants, and text generation applications.
 
 ## Endpoint
 
@@ -15,24 +15,28 @@ POST https://api.llm.kiwi/v1/chat/completions
 
 | Parameter | Type | Required | Description |
 | :--- | :--- | :--- | :--- |
-| `model` | string | Yes | The model to use: `pro`, `fast`, or `default`. |
-| `messages` | array | Yes | A list of message objects representing the conversation. |
-| `stream` | boolean | No | If `true`, tokens will be sent as data-only server-sent events. Default: `false`. |
-| `temperature` | number | No | Sampling temperature between 0 and 2. Default: `1`. |
-| `max_tokens` | integer | No | The maximum number of tokens to generate in the completion. |
-| `response_format`| object | No | Set to `{ "type": "json_object" }` to enable JSON mode. |
+| `model` | string | Yes | Model identifier: `pro`, `fast`, or `default`. |
+| `messages` | array | Yes | Conversation history as message objects. |
+| `stream` | boolean | No | Enable streaming responses. Default: `false`. |
+| `temperature` | number | No | Sampling temperature (0-2). Default: `1`. |
+| `max_tokens` | integer | No | Maximum tokens to generate. |
+| `response_format` | object | No | Set `{ "type": "json_object" }` for JSON mode. <sup>Pro</sup> |
+| `tools` | array | No | Function definitions for tool calling. <sup>Pro</sup> |
+| `tool_choice` | string/object | No | Control tool selection behavior. <sup>Pro</sup> |
 
 ## Message Format
 
-Each message object consists of a `role` and `content`.
+Each message has a `role` and `content`:
 
 | Role | Description |
 | :--- | :--- |
-| `system` | Sets the behavior or persona of the assistant. |
-| `user` | The input message from the end user. |
-| `assistant` | Previous responses from the model used for context. |
+| `system` | Sets the assistant's behavior and persona. |
+| `user` | Input from the end user. |
+| `assistant` | Previous model responses for context. |
+| `tool` | Results from function/tool calls. |
 
-### Example Message Array
+### Example Conversation
+
 ```json
 [
   {"role": "system", "content": "You are a helpful coding assistant."},
@@ -40,18 +44,50 @@ Each message object consists of a `role` and `content`.
 ]
 ```
 
-## Streaming Responses
+## Basic Request
 
-For low-latency applications, enable streaming to receive tokens as they are generated.
-
+<CodeGroup>
 ```python Python
 from openai import OpenAI
 
-client = OpenAI(base_url="https://api.llm.kiwi/v1", api_key="YOUR_KEY")
+client = OpenAI(
+    base_url="https://api.llm.kiwi/v1",
+    api_key="YOUR_API_KEY"
+)
 
+response = client.chat.completions.create(
+    model="fast",
+    messages=[{"role": "user", "content": "Hello!"}]
+)
+
+print(response.choices[0].message.content)
+```
+
+```javascript Node.js
+import OpenAI from 'openai';
+
+const client = new OpenAI({
+  baseURL: 'https://api.llm.kiwi/v1',
+  apiKey: process.env.LLM_KIWI_API_KEY
+});
+
+const response = await client.chat.completions.create({
+  model: 'fast',
+  messages: [{ role: 'user', content: 'Hello!' }]
+});
+
+console.log(response.choices[0].message.content);
+```
+</CodeGroup>
+
+## Streaming Responses
+
+Enable streaming for real-time token delivery:
+
+```python Python
 stream = client.chat.completions.create(
     model="fast",
-    messages=[{"role": "user", "content": "Tell me a story about a kiwi."}],
+    messages=[{"role": "user", "content": "Tell me a story."}],
     stream=True
 )
 
@@ -64,16 +100,16 @@ for chunk in stream:
 
 ```json
 {
-  "id": "chatcmpl-123",
+  "id": "chatcmpl-abc123",
   "object": "chat.completion",
-  "created": 1677652288,
+  "created": 1706745600,
   "model": "pro",
   "choices": [
     {
       "index": 0,
       "message": {
         "role": "assistant",
-        "content": "To reverse a string in Python, you can use slicing: `mystring[::-1]`."
+        "content": "Use slicing: `my_string[::-1]`"
       },
       "finish_reason": "stop"
     }
@@ -85,3 +121,17 @@ for chunk in stream:
   }
 }
 ```
+
+---
+
+## Pro Features
+
+<CardGroup cols={2}>
+  <Card title="JSON Mode" icon="brackets-curly" href="/api-reference/json-mode">
+    Get structured JSON responses with guaranteed valid output.
+  </Card>
+  <Card title="Function Calling" icon="function" href="/api-reference/function-calling">
+    Enable models to call your functions and APIs.
+  </Card>
+</CardGroup>
+

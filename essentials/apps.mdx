@@ -1,0 +1,135 @@
+---
+title: "Premade Apps"
+description: "Ready-to-use AI applications powered by llm.kiwi"
+---
+
+Access pre-built AI applications directly from your dashboard. No coding required to get started.
+
+## Available Apps
+
+<CardGroup cols={2}>
+  <Card title="AI Chat" icon="messages" href="https://llm.kiwi/chat">
+    Conversational interface with all available models.
+  </Card>
+  <Card title="Playground" icon="flask" href="https://llm.kiwi/playground">
+    Experiment with API parameters in real-time.
+  </Card>
+  <Card title="Code Assistant" icon="code" href="https://llm.kiwi/code">
+    Specialized coding help and code generation.
+  </Card>
+  <Card title="Image Studio" icon="image" href="https://llm.kiwi/images">
+    Generate and edit images with AI.
+  </Card>
+</CardGroup>
+
+---
+
+## AI Chat
+
+A full-featured chat interface for interacting with AI models.
+
+### Features
+
+- **Multi-Model**: Switch between `pro`, `fast`, and `default` models
+- **Conversation History**: All chats saved to your account
+- **Share Links**: Generate public links to conversations
+- **Export**: Download chats as Markdown or JSON
+
+### Tips
+
+- Use system prompts to customize behavior
+- Enable streaming for real-time responses
+- Pin important conversations for quick access
+
+---
+
+## Completion Playground
+
+Test API calls with a visual interface before writing code.
+
+### Parameters You Can Adjust
+
+| Parameter | Description |
+| :--- | :--- |
+| Model | Select from available models |
+| Temperature | Control randomness (0-2) |
+| Max Tokens | Limit response length |
+| Top P | Nucleus sampling threshold |
+| Response Format | Enable JSON mode |
+
+### Workflow
+
+1. Write your prompt in the input area
+2. Adjust parameters in the sidebar
+3. Click **Run** to execute
+4. View formatted response and token usage
+5. Click **Copy as Code** to get SDK snippet
+
+<Tip>
+  Use the Playground to prototype prompts before integrating into your application.
+</Tip>
+
+---
+
+## Code Assistant
+
+A specialized interface optimized for programming tasks.
+
+### Capabilities
+
+- Code generation from natural language
+- Bug detection and fixes
+- Code explanation and documentation
+- Refactoring suggestions
+- Multi-language support (Python, JavaScript, Go, Rust, etc.)
+
+### Best Practices
+
+- Provide context about your codebase
+- Specify the programming language
+- Include error messages when debugging
+- Ask for explanations to learn
+
+---
+
+## Image Studio
+
+Create and manipulate images using AI.
+
+### Features
+
+- **Text-to-Image**: Generate images from descriptions
+- **Variations**: Create variations of existing images
+- **Upscaling**: Enhance image resolution
+- **Gallery**: Browse and manage generated images
+
+### Supported Models
+
+- Flux (default) — High-quality, fast generation
+- DALL-E 3 — Photorealistic and artistic styles
+
+---
+
+## Troubleshooting
+
+### Chat Not Loading
+
+- Clear browser cache and cookies
+- Check your API key is active in the dashboard
+- Verify you're logged into your account
+
+### Slow Responses
+
+- Switch to the `fast` model for quicker replies
+- Reduce `max_tokens` parameter
+- Check [status.llm.kiwi](https://status.llm.kiwi) for outages
+
+### Images Not Generating
+
+- Verify you have Pro tier access
+- Ensure prompt follows content guidelines
+- Check daily usage limits
+
+<Card title="Need Help?" icon="headset" href="mailto:support@llm.kiwi" horizontal>
+  Contact support for technical assistance.
+</Card>

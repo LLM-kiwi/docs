@@ -1,31 +1,89 @@
 ---
 title: "Rate Limits"
-description: "Understanding usage limits and how to scale your integration"
+description: "Understanding API rate limits and quotas across all tiers"
 ---
 
-To ensure stability and fair access for all users, llm.kiwi implements rate limits across all API endpoints.
+To ensure platform stability and fair access for all users, llm.kiwi implements rate limits across all API endpoints.
 
-## Tiered Limits
+## Rate Limits by Tier
 
-Limits are applied based on your current account tier.
+<Note>
+  All limits reset daily at **Midnight UTC**.
+</Note>
 
-| Tier | Tokens Per Minute (TPM) | Requests Per Minute (RPM) |
-| :--- | :--- | :--- |
-| **Free** | 40,000 | 3 |
-| **Developer** | 200,000 | 50 |
-| **Scale** | 1,000,000 | 500 |
-| **Enterprise** | Custom | Custom |
+| Tier | Daily Requests | Requests/Min (RPM) | Max Tokens |
+| :--- | :--- | :--- | :--- |
+| **Anonymous** | 100 (shared) | 10 | 2,048 |
+| **Free** (registered) | 500 | 20 | 4,096 |
+| **Pro** | Unlimited* | 100 | 32,768 |
+| **Enterprise** | Custom | Custom | Custom |
+
+*Pro tier has soft limits for abuse prevention. Contact support if you need higher throughput.
+
+## Rate Limit Headers
+
+Each API response includes headers to help you track your usage:
+
+| Header | Description |
+| :--- | :--- |
+| `X-RateLimit-Limit` | Maximum requests allowed per minute |
+| `X-RateLimit-Remaining` | Requests remaining in current window |
+| `X-RateLimit-Reset` | Unix timestamp when the limit resets |
 
 ## Handling Rate Limits
 
-When a rate limit is reached, the API will return a `429 Too Many Requests` response.
+When a rate limit is reached, the API returns a `429 Too Many Requests` response.
+
+### Retry Strategy
+
+Implement exponential backoff with jitter for optimal retry handling:
+
+<CodeGroup>
+```python Python
+import time
+import random
+
+def make_request_with_retry(func, max_retries=5):
+    for attempt in range(max_retries):
+        try:
+            return func()
+        except RateLimitError:
+            if attempt == max_retries - 1:
+                raise
+            wait_time = (2 ** attempt) + random.uniform(0, 1)
+            time.sleep(wait_time)
+```
+
+```javascript JavaScript
+async function makeRequestWithRetry(fn, maxRetries = 5) {
+  for (let attempt = 0; attempt < maxRetries; attempt++) {
+    try {
+      return await fn();
+    } catch (error) {
+      if (error.status !== 429 || attempt === maxRetries - 1) throw error;
+      const waitTime = Math.pow(2, attempt) + Math.random();
+      await new Promise(r => setTimeout(r, waitTime * 1000));
+    }
+  }
+}
+```
+</CodeGroup>
 
 ### Best Practices
 
-1.  **Exponential Backoff**: If you receive a 429, wait for a short period before retrying. Increase the wait time exponentially with each subsequent failure.
-2.  **Request Optimization**: Batch tasks when possible and avoid redundant calls.
-3.  **Token Management**: Monitor your token usage in the response headers to anticipate limits.
+1. **Exponential Backoff**: Wait progressively longer between retries (2s, 4s, 8s, etc.)
+2. **Request Batching**: Combine multiple operations when possible
+3. **Token Monitoring**: Check response headers to anticipate limits
+4. **Caching**: Cache responses for repeated identical queries
 
 ## Increasing Your Limits
 
-If your application requires higher throughput, you can upgrade your plan in the [Billing Dashboard](https://llm.kiwi/dashboard/billing) or contact our support team for enterprise-grade custom limits.
+<CardGroup cols={2}>
+  <Card title="Upgrade to Pro" icon="crown" href="https://llm.kiwi/pricing">
+    Unlock unlimited requests and higher token limits.
+  </Card>
+  <Card title="Enterprise" icon="building" href="mailto:business@llm.kiwi">
+    Custom limits tailored to your organization's needs.
+  </Card>
+</CardGroup>
+

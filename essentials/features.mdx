@@ -1,0 +1,120 @@
+---
+title: "Platform Features"
+description: "Dashboard capabilities, API key management, and usage monitoring"
+---
+
+The llm.kiwi dashboard provides everything you need to manage your AI integration at scale.
+
+## Dashboard Overview
+
+Access your dashboard at [llm.kiwi/dashboard](https://llm.kiwi/dashboard) to manage all aspects of your account.
+
+<CardGroup cols={2}>
+  <Card title="API Keys" icon="key">
+    Create, rotate, and manage access credentials.
+  </Card>
+  <Card title="Usage Analytics" icon="chart-line">
+    Real-time and historical request tracking.
+  </Card>
+  <Card title="Billing" icon="credit-card">
+    Manage subscriptions and payment methods.
+  </Card>
+  <Card title="Settings" icon="gear">
+    Configure account preferences and notifications.
+  </Card>
+</CardGroup>
+
+## API Key Management
+
+### Creating Keys
+
+Generate new API keys with custom configurations:
+
+1. Navigate to **API Keys** in your dashboard
+2. Click **Create New Key**
+3. Configure key settings:
+   - **Name**: Descriptive label (e.g., "Production Backend")
+   - **Scope**: Select allowed endpoints
+   - **Expiration**: Optional auto-expiration date
+
+<Warning>
+  API keys are shown **only once** at creation. Store them securely immediately.
+</Warning>
+
+### Key Scopes
+
+Restrict what each key can access:
+
+| Scope | Description |
+| :--- | :--- |
+| `chat:read` | Read-only access to models list |
+| `chat:write` | Create chat completions |
+| `images:write` | Generate images |
+| `audio:write` | Transcribe audio |
+| `*` | Full access (default) |
+
+### Rotating Keys
+
+Regularly rotate keys for security:
+
+1. Create a new key with the same configuration
+2. Update your applications with the new key
+3. Delete the old key once migration is complete
+
+<Tip>
+  Use environment variables to store keys, making rotation easier.
+</Tip>
+
+## Usage Statistics
+
+### Real-Time Monitoring
+
+The dashboard displays live metrics:
+
+- **Requests/Minute**: Current API call rate
+- **Active Sessions**: Concurrent streaming connections
+- **Error Rate**: Percentage of failed requests
+
+### Historical Data
+
+View usage trends over time:
+
+- Daily, weekly, and monthly breakdowns
+- Request volume by endpoint
+- Token consumption patterns
+- Error frequency and types
+
+### Export Options
+
+Export your usage data for analysis:
+
+- **CSV**: Raw data for spreadsheets
+- **JSON**: Structured data for automation
+- **PDF**: Formatted reports for stakeholders
+
+## Alerts & Notifications
+
+Configure alerts for important events:
+
+| Alert Type | Description |
+| :--- | :--- |
+| Usage Threshold | When usage exceeds X% of limit |
+| Error Spike | When error rate exceeds threshold |
+| Key Expiration | Before API keys expire |
+| Billing | Payment failures or upcoming charges |
+
+## Team Management
+
+<Note>
+  Team features available on **Pro** and **Enterprise** tiers.
+</Note>
+
+- Invite team members via email
+- Assign role-based permissions (Admin, Developer, Viewer)
+- Audit logs for compliance tracking
+
+---
+
+<Card title="Get Started" icon="rocket" href="/quickstart" horizontal>
+  Create your first API key and make your first request.
+</Card>

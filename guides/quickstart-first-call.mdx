@@ -1,0 +1,162 @@
+---
+title: "First API Call"
+description: "Make your first llm.kiwi API request in under 5 minutes"
+---
+
+Get up and running with the llm.kiwi API quickly. This guide walks you through everything from account creation to your first successful response.
+
+## Prerequisites
+
+- A computer with internet access
+- Python 3.8+ or Node.js 18+ installed
+- A text editor or IDE
+
+## Step 1: Create Your Account
+
+1. Go to [llm.kiwi](https://llm.kiwi)
+2. Click **Get Started** or **Sign In**
+3. Sign in with Google (one-click registration)
+
+## Step 2: Generate an API Key
+
+1. Navigate to your [Dashboard](https://llm.kiwi/dashboard)
+2. Go to **API Keys** section
+3. Click **Create New Key**
+4. Copy your key immediately
+
+<Warning>
+  Your API key is only shown once. Save it in a secure location like a password manager or environment variable.
+</Warning>
+
+## Step 3: Set Up Your Environment
+
+Store your API key as an environment variable:
+
+<CodeGroup>
+```bash macOS/Linux
+export LLM_KIWI_API_KEY="your-api-key-here"
+```
+
+```powershell Windows
+$env:LLM_KIWI_API_KEY="your-api-key-here"
+```
+</CodeGroup>
+
+## Step 4: Install the SDK
+
+llm.kiwi is fully compatible with the OpenAI SDK:
+
+<CodeGroup>
+```bash Python
+pip install openai
+```
+
+```bash Node.js
+npm install openai
+```
+</CodeGroup>
+
+## Step 5: Make Your First Request
+
+<CodeGroup>
+```python Python
+from openai import OpenAI
+import os
+
+# Initialize the client
+client = OpenAI(
+    base_url="https://api.llm.kiwi/v1",
+    api_key=os.environ.get("LLM_KIWI_API_KEY")
+)
+
+# Make a chat completion request
+response = client.chat.completions.create(
+    model="fast",
+    messages=[
+        {"role": "user", "content": "Hello! What can you help me with?"}
+    ]
+)
+
+# Print the response
+print(response.choices[0].message.content)
+```
+
+```javascript Node.js
+import OpenAI from 'openai';
+
+// Initialize the client
+const client = new OpenAI({
+  baseURL: 'https://api.llm.kiwi/v1',
+  apiKey: process.env.LLM_KIWI_API_KEY
+});
+
+// Make a chat completion request
+const response = await client.chat.completions.create({
+  model: 'fast',
+  messages: [
+    { role: 'user', content: 'Hello! What can you help me with?' }
+  ]
+});
+
+// Print the response
+console.log(response.choices[0].message.content);
+```
+
+```bash cURL
+curl https://api.llm.kiwi/v1/chat/completions \
+  -H "Authorization: Bearer $LLM_KIWI_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "fast",
+    "messages": [{"role": "user", "content": "Hello!"}]
+  }'
+```
+</CodeGroup>
+
+## Expected Output
+
+You should see a response like:
+
+```text
+Hello! I can help you with many things including:
+- Answering questions
+- Writing and editing text
+- Coding assistance
+- Analysis and research
+...
+```
+
+## Troubleshooting
+
+### "Invalid API key"
+
+- Double-check your key is correct
+- Ensure no extra spaces or quotes
+- Verify the key is active in your dashboard
+
+### "Connection refused"
+
+- Check your internet connection
+- Verify the base URL is `https://api.llm.kiwi/v1`
+
+### Empty response
+
+- Ensure messages array is formatted correctly
+- Check that model name is valid (`fast`, `pro`, or `default`)
+
+## What's Next?
+
+<CardGroup cols={2}>
+  <Card title="Available Models" icon="layer-group" href="/essentials/models">
+    Understand the differences between pro, fast, and default.
+  </Card>
+  <Card title="Build a Chatbot" icon="robot" href="/guides/building-chatbot">
+    Create a multi-turn conversational application.
+  </Card>
+  <Card title="Rate Limits" icon="gauge" href="/essentials/rate-limits">
+    Understand usage limits and how to optimize.
+  </Card>
+  <Card title="API Reference" icon="code" href="/api-reference/chat-completions">
+    Explore all available parameters and options.
+  </Card>
+</CardGroup>

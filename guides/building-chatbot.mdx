@@ -1,0 +1,221 @@
+---
+title: "Building a Chatbot"
+description: "Create a multi-turn conversational AI application"
+---
+
+Learn how to build a production-ready chatbot with conversation history, streaming responses, and error handling.
+
+## Basic Chatbot
+
+A chatbot maintains conversation context by passing all previous messages with each request:
+
+```python Python
+from openai import OpenAI
+import os
+
+client = OpenAI(
+    base_url="https://api.llm.kiwi/v1",
+    api_key=os.environ.get("LLM_KIWI_API_KEY")
+)
+
+# Conversation history
+messages = [
+    {"role": "system", "content": "You are a helpful assistant."}
+]
+
+def chat(user_input: str) -> str:
+    # Add user message to history
+    messages.append({"role": "user", "content": user_input})
+    
+    # Get response
+    response = client.chat.completions.create(
+        model="fast",
+        messages=messages
+    )
+    
+    # Extract assistant message
+    assistant_message = response.choices[0].message.content
+    
+    # Add to history for context
+    messages.append({"role": "assistant", "content": assistant_message})
+    
+    return assistant_message
+
+# Usage
+print(chat("Hi, I'm learning Python!"))
+print(chat("What's a good first project?"))
+print(chat("Can you show me how to start?"))
+```
+
+## Streaming Responses
+
+For a better user experience, stream responses in real-time:
+
+```python Python
+def chat_stream(user_input: str):
+    messages.append({"role": "user", "content": user_input})
+    
+    stream = client.chat.completions.create(
+        model="fast",
+        messages=messages,
+        stream=True
+    )
+    
+    full_response = ""
+    for chunk in stream:
+        if chunk.choices[0].delta.content:
+            content = chunk.choices[0].delta.content
+            full_response += content
+            print(content, end="", flush=True)
+    
+    print()  # Newline after response
+    messages.append({"role": "assistant", "content": full_response})
+    return full_response
+```
+
+## JavaScript Implementation
+
+```javascript Node.js
+import OpenAI from 'openai';
+
+const client = new OpenAI({
+  baseURL: 'https://api.llm.kiwi/v1',
+  apiKey: process.env.LLM_KIWI_API_KEY
+});
+
+const messages = [
+  { role: 'system', content: 'You are a helpful assistant.' }
+];
+
+async function chat(userInput) {
+  messages.push({ role: 'user', content: userInput });
+  
+  const response = await client.chat.completions.create({
+    model: 'fast',
+    messages
+  });
+  
+  const assistantMessage = response.choices[0].message.content;
+  messages.push({ role: 'assistant', content: assistantMessage });
+  
+  return assistantMessage;
+}
+
+// With streaming
+async function chatStream(userInput) {
+  messages.push({ role: 'user', content: userInput });
+  
+  const stream = await client.chat.completions.create({
+    model: 'fast',
+    messages,
+    stream: true
+  });
+  
+  let fullResponse = '';
+  for await (const chunk of stream) {
+    const content = chunk.choices[0]?.delta?.content || '';
+    fullResponse += content;
+    process.stdout.write(content);
+  }
+  
+  console.log();
+  messages.push({ role: 'assistant', content: fullResponse });
+  return fullResponse;
+}
+```
+
+## Managing Context Length
+
+Conversation history grows with each turn. Manage context to avoid exceeding limits:
+
+```python Python
+def trim_conversation(messages, max_tokens=3000):
+    """Keep conversation under token limit by removing old messages."""
+    # Always keep system message
+    system_msg = messages[0] if messages[0]["role"] == "system" else None
+    
+    # Simple approach: keep last N messages
+    recent_messages = messages[-10:] if len(messages) > 10 else messages
+    
+    if system_msg and recent_messages[0] != system_msg:
+        recent_messages = [system_msg] + recent_messages
+    
+    return recent_messages
+
+# Before each request
+messages = trim_conversation(messages)
+```
+
+## Error Handling
+
+Build resilience with proper error handling:
+
+```python Python
+from openai import RateLimitError, APIError
+import time
+
+def chat_with_retry(user_input: str, max_retries: int = 3) -> str:
+    messages.append({"role": "user", "content": user_input})
+    
+    for attempt in range(max_retries):
+        try:
+            response = client.chat.completions.create(
+                model="fast",
+                messages=messages
+            )
+            assistant_message = response.choices[0].message.content
+            messages.append({"role": "assistant", "content": assistant_message})
+            return assistant_message
+            
+        except RateLimitError:
+            wait_time = 2 ** attempt
+            print(f"Rate limited. Retrying in {wait_time}s...")
+            time.sleep(wait_time)
+            
+        except APIError as e:
+            print(f"API error: {e}")
+            messages.pop()  # Remove failed user message
+            raise
+    
+    messages.pop()  # Remove user message if all retries failed
+    raise Exception("Max retries exceeded")
+```
+
+## Adding System Prompts
+
+Customize chatbot behavior with system prompts:
+
+```python Python
+# Customer support bot
+messages = [{
+    "role": "system",
+    "content": """You are a customer support agent for llm.kiwi.
+    
+    Guidelines:
+    - Be friendly and professional
+    - If you don't know something, say so
+    - Provide links to documentation when relevant
+    - Keep responses concise but helpful
+    
+    Available resources:
+    - Documentation: docs.llm.kiwi
+    - Dashboard: llm.kiwi/dashboard
+    - Support email: support@llm.kiwi
+    """
+}]
+```
+
+## Production Checklist
+
+Before deploying your chatbot:
+
+- [ ] Implement rate limiting on your side
+- [ ] Add request timeouts
+- [ ] Log conversations (with privacy compliance)
+- [ ] Handle edge cases (empty input, malformed responses)
+- [ ] Set up error alerting
+- [ ] Monitor token usage and costs
+
+<Card title="Add Function Calling" icon="function" href="/api-reference/function-calling" horizontal>
+  Give your chatbot the ability to perform actions and fetch real-time data.
+</Card>

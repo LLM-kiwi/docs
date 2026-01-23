@@ -1,0 +1,195 @@
+---
+title: "Function Calling"
+description: "Enable AI models to invoke your functions and external APIs"
+---
+
+<Note>
+  Function Calling is a **Pro** feature. [Upgrade](https://llm.kiwi/pricing) to access.
+</Note>
+
+Allow models to call predefined functions with structured parameters. Build agents, automate workflows, and connect AI to your existing systems.
+
+## Basic Usage
+
+Define tools and let the model decide when to call them:
+
+```python Python
+from openai import OpenAI
+import json
+
+client = OpenAI(
+    base_url="https://api.llm.kiwi/v1",
+    api_key="YOUR_API_KEY"
+)
+
+tools = [
+    {
+        "type": "function",
+        "function": {
+            "name": "get_weather",
+            "description": "Get current weather for a location",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "location": {
+                        "type": "string",
+                        "description": "City name, e.g. 'San Francisco'"
+                    },
+                    "unit": {
+                        "type": "string",
+                        "enum": ["celsius", "fahrenheit"]
+                    }
+                },
+                "required": ["location"]
+            }
+        }
+    }
+]
+
+response = client.chat.completions.create(
+    model="pro",
+    messages=[{"role": "user", "content": "What's the weather in Paris?"}],
+    tools=tools
+)
+
+# Check if model wants to call a function
+if response.choices[0].message.tool_calls:
+    tool_call = response.choices[0].message.tool_calls[0]
+    print(f"Function: {tool_call.function.name}")
+    print(f"Arguments: {tool_call.function.arguments}")
+```
+
+## Tool Definition Schema
+
+```json
+{
+  "type": "function",
+  "function": {
+    "name": "function_name",
+    "description": "Clear description of what the function does",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "param1": {
+          "type": "string",
+          "description": "Description of parameter"
+        },
+        "param2": {
+          "type": "integer",
+          "enum": [1, 2, 3]
+        }
+      },
+      "required": ["param1"]
+    }
+  }
+}
+```
+
+## Handling Tool Responses
+
+After receiving a tool call, execute the function and send results back:
+
+```python Python
+def get_weather(location: str, unit: str = "celsius") -> dict:
+    # Your actual API call here
+    return {"temperature": 22, "condition": "sunny", "unit": unit}
+
+# Process tool calls
+message = response.choices[0].message
+if message.tool_calls:
+    # Add assistant's message with tool calls
+    messages = [
+        {"role": "user", "content": "What's the weather in Paris?"},
+        message
+    ]
+    
+    # Execute each tool call
+    for tool_call in message.tool_calls:
+        args = json.loads(tool_call.function.arguments)
+        result = get_weather(**args)
+        
+        # Add tool result
+        messages.append({
+            "role": "tool",
+            "tool_call_id": tool_call.id,
+            "content": json.dumps(result)
+        })
+    
+    # Get final response
+    final = client.chat.completions.create(
+        model="pro",
+        messages=messages,
+        tools=tools
+    )
+    print(final.choices[0].message.content)
+```
+
+## Parallel Function Calls
+
+Models can request multiple function calls simultaneously:
+
+```python Python
+tools = [
+    {
+        "type": "function",
+        "function": {
+            "name": "get_stock_price",
+            "description": "Get current stock price",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "symbol": {"type": "string"}
+                },
+                "required": ["symbol"]
+            }
+        }
+    }
+]
+
+response = client.chat.completions.create(
+    model="pro",
+    messages=[{"role": "user", "content": "Compare AAPL and GOOGL prices"}],
+    tools=tools
+)
+
+# May return multiple tool_calls
+for call in response.choices[0].message.tool_calls:
+    print(f"Call {call.function.name} with {call.function.arguments}")
+```
+
+## Controlling Tool Usage
+
+Use `tool_choice` to control function calling behavior:
+
+| Value | Behavior |
+| :--- | :--- |
+| `"auto"` | Model decides whether to call functions (default) |
+| `"none"` | Never call functions |
+| `"required"` | Must call at least one function |
+| `{"type": "function", "function": {"name": "..."}}` | Force specific function |
+
+```python Python
+# Force a specific function
+response = client.chat.completions.create(
+    model="pro",
+    messages=[{"role": "user", "content": "Get me info"}],
+    tools=tools,
+    tool_choice={"type": "function", "function": {"name": "get_weather"}}
+)
+```
+
+## Best Practices
+
+1. **Clear Descriptions**: Write detailed function and parameter descriptions
+2. **Validate Arguments**: Always validate parsed arguments before execution
+3. **Error Handling**: Return clear error messages when functions fail
+4. **Limit Scope**: Define only necessary functions to reduce token usage
+5. **Idempotency**: Make functions safe to retry on failures
+
+<Tip>
+  Combine with [JSON Mode](/api-reference/json-mode) for even more structured outputs.
+</Tip>
+
+<Card title="Build AI Agents" icon="robot" href="/guides/building-chatbot" horizontal>
+  Learn how to combine function calling with conversation history for powerful agents.
+</Card>

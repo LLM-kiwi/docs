@@ -1,0 +1,125 @@
+---
+title: "JSON Mode"
+description: "Get guaranteed valid JSON responses from your API calls"
+---
+
+<Note>
+  JSON Mode is a **Pro** feature. [Upgrade](https://llm.kiwi/pricing) to access.
+</Note>
+
+Force the model to output valid, parseable JSON. Perfect for building structured data pipelines, APIs, and automated workflows.
+
+## Enabling JSON Mode
+
+Set `response_format` to `{"type": "json_object"}` in your request:
+
+```python Python
+from openai import OpenAI
+
+client = OpenAI(
+    base_url="https://api.llm.kiwi/v1",
+    api_key="YOUR_API_KEY"
+)
+
+response = client.chat.completions.create(
+    model="pro",
+    response_format={"type": "json_object"},
+    messages=[
+        {"role": "system", "content": "Extract data as JSON."},
+        {"role": "user", "content": "Parse: John Doe, 30 years old, engineer"}
+    ]
+)
+
+print(response.choices[0].message.content)
+# {"name": "John Doe", "age": 30, "occupation": "engineer"}
+```
+
+## Request Format
+
+| Parameter | Type | Description |
+| :--- | :--- | :--- |
+| `response_format` | object | Set to `{"type": "json_object"}` |
+| `messages` | array | **Must** include "JSON" in system or user message |
+
+<Warning>
+  You **must** mention "JSON" in your prompt (system or user message). Otherwise, the request may fail or produce unexpected results.
+</Warning>
+
+## Example Use Cases
+
+### Data Extraction
+
+```json System Prompt
+You are a data extraction assistant. Always respond with valid JSON matching this schema:
+{
+  "entities": [{"name": "string", "type": "string"}],
+  "sentiment": "positive|negative|neutral",
+  "summary": "string"
+}
+```
+
+### API Response Generation
+
+```python Python
+response = client.chat.completions.create(
+    model="pro",
+    response_format={"type": "json_object"},
+    messages=[
+        {
+            "role": "system",
+            "content": """Generate API response JSON with structure:
+            {"status": "success|error", "data": {...}, "message": "string"}"""
+        },
+        {"role": "user", "content": "Create a response for user signup success"}
+    ]
+)
+```
+
+### Structured Analysis
+
+```python Python
+response = client.chat.completions.create(
+    model="pro",
+    response_format={"type": "json_object"},
+    messages=[
+        {
+            "role": "system",
+            "content": "Analyze text and return JSON with keys: topics, keywords, reading_level"
+        },
+        {"role": "user", "content": "Analyze this article..."}
+    ]
+)
+```
+
+## Model Compatibility
+
+| Model | JSON Mode Support |
+| :--- | :--- |
+| `pro` | ✅ Full support |
+| `fast` | ✅ Full support |
+| `default` | ⚠️ Best effort |
+
+## Error Handling
+
+If JSON parsing fails, wrap your response handling:
+
+```python Python
+import json
+
+try:
+    data = json.loads(response.choices[0].message.content)
+except json.JSONDecodeError as e:
+    # Handle invalid JSON
+    print(f"Failed to parse: {e}")
+```
+
+## Best Practices
+
+1. **Define Schema in Prompt**: Clearly specify the expected JSON structure
+2. **Use System Messages**: Put JSON requirements in the system role
+3. **Validate Output**: Always validate parsed JSON against your schema
+4. **Handle Edge Cases**: Account for optional fields and type variations
+
+<Card title="Need More Structure?" icon="function" href="/api-reference/function-calling" horizontal>
+  For even stricter schemas, use Function Calling with typed parameters.
+</Card>

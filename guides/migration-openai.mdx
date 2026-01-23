@@ -1,0 +1,183 @@
+---
+title: "Migrating from OpenAI"
+description: "Switch from OpenAI to llm.kiwi in minutes"
+---
+
+llm.kiwi is designed as a drop-in replacement for the OpenAI API. Migrating requires minimal code changes—often just updating the base URL.
+
+## Quick Migration
+
+### Python
+
+```python Before (OpenAI)
+from openai import OpenAI
+
+client = OpenAI(
+    api_key="sk-..."
+)
+```
+
+```python After (llm.kiwi)
+from openai import OpenAI
+
+client = OpenAI(
+    base_url="https://api.llm.kiwi/v1",  # Add this line
+    api_key="your-llm-kiwi-key"           # Use llm.kiwi key
+)
+```
+
+### Node.js
+
+```javascript Before (OpenAI)
+import OpenAI from 'openai';
+
+const client = new OpenAI({
+  apiKey: "sk-..."
+});
+```
+
+```javascript After (llm.kiwi)
+import OpenAI from 'openai';
+
+const client = new OpenAI({
+  baseURL: 'https://api.llm.kiwi/v1',  // Add this line
+  apiKey: process.env.LLM_KIWI_API_KEY  // Use llm.kiwi key
+});
+```
+
+## Model Mapping
+
+Map OpenAI models to llm.kiwi equivalents:
+
+| OpenAI Model | llm.kiwi Equivalent | Notes |
+| :--- | :--- | :--- |
+| `gpt-4` | `pro` | Highest capability |
+| `gpt-4-turbo` | `pro` | Same routing |
+| `gpt-3.5-turbo` | `fast` | Speed optimized |
+| `gpt-4o-mini` | `fast` | Efficient alternative |
+
+<Tip>
+  Use llm.kiwi's `default` model to let our router automatically select the best model for each request.
+</Tip>
+
+## API Compatibility
+
+llm.kiwi supports most OpenAI endpoints:
+
+| Endpoint | Status |
+| :--- | :--- |
+| `/v1/chat/completions` | ✅ Full support |
+| `/v1/images/generations` | ✅ Full support |
+| `/v1/audio/transcriptions` | ✅ Full support |
+| `/v1/models` | ✅ Full support |
+| `/v1/embeddings` | ⚠️ Coming soon |
+| `/v1/assistants` | ⚠️ Coming soon |
+
+## Feature Compatibility
+
+| Feature | Supported |
+| :--- | :--- |
+| Streaming | ✅ |
+| JSON Mode | ✅ (Pro) |
+| Function Calling | ✅ (Pro) |
+| Vision (image input) | ✅ (Pro) |
+| Temperature/Top P | ✅ |
+| Max Tokens | ✅ |
+
+## Environment Variables
+
+Update your environment configuration:
+
+```bash Before
+OPENAI_API_KEY=sk-...
+OPENAI_BASE_URL=https://api.openai.com/v1
+```
+
+```bash After
+LLM_KIWI_API_KEY=your-key-here
+LLM_KIWI_BASE_URL=https://api.llm.kiwi/v1
+```
+
+## Framework-Specific Guides
+
+### LangChain
+
+```python Python
+from langchain_openai import ChatOpenAI
+
+llm = ChatOpenAI(
+    base_url="https://api.llm.kiwi/v1",
+    api_key="your-llm-kiwi-key",
+    model="pro"
+)
+```
+
+### LlamaIndex
+
+```python Python
+from llama_index.llms.openai import OpenAI
+
+llm = OpenAI(
+    api_base="https://api.llm.kiwi/v1",
+    api_key="your-llm-kiwi-key",
+    model="pro"
+)
+```
+
+### Vercel AI SDK
+
+```typescript TypeScript
+import { createOpenAI } from '@ai-sdk/openai';
+
+const llmkiwi = createOpenAI({
+  baseURL: 'https://api.llm.kiwi/v1',
+  apiKey: process.env.LLM_KIWI_API_KEY
+});
+```
+
+## Testing Your Migration
+
+Verify your migration works correctly:
+
+```python Python
+# Test basic functionality
+response = client.chat.completions.create(
+    model="fast",
+    messages=[{"role": "user", "content": "Hello, is this working?"}]
+)
+print("✅ Basic request:", response.choices[0].message.content[:50])
+
+# Test streaming
+stream = client.chat.completions.create(
+    model="fast",
+    messages=[{"role": "user", "content": "Count to 3"}],
+    stream=True
+)
+print("✅ Streaming:", end=" ")
+for chunk in stream:
+    if chunk.choices[0].delta.content:
+        print(chunk.choices[0].delta.content, end="")
+print()
+
+print("🎉 Migration successful!")
+```
+
+## Common Issues
+
+### "Model not found"
+
+OpenAI model names don't work directly. Use llm.kiwi models:
+- `gpt-4` → `pro`
+- `gpt-3.5-turbo` → `fast`
+
+### Missing features
+
+Some newer OpenAI features may not be available yet. Check our [API Reference](/api-reference/chat-completions) for current support.
+
+### Rate limits differ
+
+llm.kiwi has different rate limits. Review [Rate Limits](/essentials/rate-limits) for your tier.
+
+<Card title="Need Help?" icon="headset" href="mailto:support@llm.kiwi" horizontal>
+  Contact support if you encounter migration issues.
+</Card>

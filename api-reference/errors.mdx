@@ -1,43 +1,111 @@
 ---
 title: "Errors"
-description: "Understanding API error codes and troubleshooting common issues"
+description: "HTTP status codes, error formats, and troubleshooting guide"
 ---
 
-llm.kiwi uses conventional HTTP response codes to indicate the success or failure of an API request.
+llm.kiwi uses standard HTTP response codes and returns detailed error objects for easy debugging.
 
 ## HTTP Status Codes
 
 | Code | Type | Description |
 | :--- | :--- | :--- |
-| `200` | Success | Everything worked as expected. |
-| `400` | Bad Request | The request was unacceptable, often due to missing parameters. |
-| `401` | Unauthorized | No valid API key provided. |
-| `403` | Forbidden | You lack permissions for the requested resource (e.g., tier limits). |
-| `404` | Not Found | The requested resource doesn't exist. |
-| `429` | Rate Limit | Too many requests hit the API too quickly. |
-| `500` | Server Error | Something went wrong on our end. |
+| `200` | Success | Request completed successfully. |
+| `400` | Bad Request | Invalid parameters or malformed request. |
+| `401` | Unauthorized | Missing or invalid API key. |
+| `403` | Forbidden | Key lacks required permissions or tier access. |
+| `404` | Not Found | Resource or endpoint doesn't exist. |
+| `429` | Rate Limited | Too many requests. Slow down and retry. |
+| `500` | Server Error | Internal error. Retry with backoff. |
+| `503` | Service Unavailable | Temporary outage. Retry shortly. |
 
-## Error Object Structure
-
-When an error occurs, the API returns a JSON object with details about the failure.
+## Error Response Format
 
 ```json
 {
   "error": {
     "message": "The model 'invalid-model' does not exist.",
     "type": "invalid_request_error",
-    "code": "model_not_found"
+    "code": "model_not_found",
+    "param": "model"
   }
 }
 ```
 
-## Common Error Scenarios
+| Field | Description |
+| :--- | :--- |
+| `message` | Human-readable error description. |
+| `type` | Error category (e.g., `invalid_request_error`, `rate_limit_error`). |
+| `code` | Machine-readable error code for handling. |
+| `param` | The specific parameter that caused the error (if applicable). |
 
-### Rate Limiting (`429`)
-If you exceed your tier's limits, you will receive a 429 error. We recommend implementing exponential backoff to handle these gracefully.
+## Common Errors & Solutions
 
-### Token Limits (`400`)
-If your `messages` array combined with `max_tokens` exceeds the model's context window, the request will fail.
+### 401: Invalid API Key
 
-### Invalid Key (`401`)
-Ensure your `Authorization` header is formatted correctly as `Bearer YOUR_API_KEY`.
+```json
+{"error": {"message": "Invalid API key", "type": "authentication_error"}}
+```
+
+**Solutions:**
+- Verify your key is correct and hasn't been rotated
+- Ensure the `Authorization` header is formatted as `Bearer YOUR_API_KEY`
+- Check that your key is active in the [Dashboard](https://llm.kiwi/dashboard)
+
+### 429: Rate Limit Exceeded
+
+```json
+{"error": {"message": "Rate limit exceeded", "type": "rate_limit_error"}}
+```
+
+**Solutions:**
+- Implement exponential backoff (see below)
+- Check `X-RateLimit-Reset` header for when limits reset
+- Consider upgrading to a higher tier
+
+### 400: Context Length Exceeded
+
+```json
+{"error": {"message": "Context length exceeded", "type": "invalid_request_error", "code": "context_length_exceeded"}}
+```
+
+**Solutions:**
+- Reduce the length of your prompt or conversation history
+- Decrease `max_tokens` parameter
+- Use a model with higher context limits
+
+### 403: Insufficient Tier
+
+```json
+{"error": {"message": "This feature requires Pro tier", "type": "access_denied_error"}}
+```
+
+**Solutions:**
+- Upgrade your account at [llm.kiwi/pricing](https://llm.kiwi/pricing)
+- Use a feature available on your current tier
+
+## Retry Strategy
+
+For transient errors (`429`, `500`, `503`), implement exponential backoff:
+
+```python Python
+import time
+import random
+
+def retry_with_backoff(func, max_retries=5):
+    for attempt in range(max_retries):
+        try:
+            return func()
+        except Exception as e:
+            if not is_retryable(e) or attempt == max_retries - 1:
+                raise
+            wait = (2 ** attempt) + random.uniform(0, 1)
+            time.sleep(wait)
+
+def is_retryable(error):
+    return getattr(error, 'status_code', 0) in [429, 500, 503]
+```
+
+<Tip>
+  Always check the `X-RateLimit-*` headers to proactively avoid hitting limits.
+</Tip>
+
