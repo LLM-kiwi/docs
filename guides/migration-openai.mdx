@@ -164,17 +164,21 @@ print("🎉 Migration successful!")
 
 ## Common Issues
 
-OpenAI model names don't work directly. Use llm.kiwi models:
-- `gpt-4` → `gpt-oss-20b` (or other Pro models)
-- `gpt-3.5-turbo` → `default`
+<AccordionGroup>
+  <Accordion title="Model names don't work">
+    OpenAI model names don't work directly. Use llm.kiwi models:
+    - `gpt-4` → `gpt-oss-20b` (or other Pro models)
+    - `gpt-3.5-turbo` → `default`
+  </Accordion>
 
-### Missing features
+  <Accordion title="Missing features">
+    Some newer OpenAI features may not be available yet. Check our [API Reference](/api-reference/chat-completions) for current support.
+  </Accordion>
 
-Some newer OpenAI features may not be available yet. Check our [API Reference](/api-reference/chat-completions) for current support.
-
-### Rate limits differ
-
-llm.kiwi has different rate limits. Review [Rate Limits](/essentials/rate-limits) for your tier.
+  <Accordion title="Rate limits differ">
+    llm.kiwi has different rate limits. Review [Rate Limits](/essentials/rate-limits) for your tier.
+  </Accordion>
+</AccordionGroup>
 
 <Card title="Need Help?" icon="headset" href="mailto:support@llm.kiwi" horizontal>
   Contact support if you encounter migration issues.
