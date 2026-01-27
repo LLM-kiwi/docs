@@ -9,14 +9,21 @@ Welcome! This guide will help you get your first response from the llm.kiwi API.
 
 Follow these steps to integrate professional-grade AI into your application.
 
-### Step 1: Create your API Key
+<Steps>
+<Step title="Create your API Key">
 
 Go to the [llm.kiwi Dashboard](https://llm.kiwi/dashboard) and sign in (using Google). Navigate to the **API Keys** section and generate a new key.
 
-> [!IMPORTANT]
-> Your API key is shown only once. Copy it and store it securely in your environment variables.
+<Card title="Go to Dashboard" icon="gauge-high" href="https://llm.kiwi/dashboard">
+  Get your API key to start building
+</Card>
 
-### Step 2: Choose your SDK
+<Warning>
+Your API key is shown only once. Copy it and store it securely in your environment variables.
+</Warning>
+
+</Step>
+<Step title="Choose your SDK">
 
 llm.kiwi is fully compatible with the official OpenAI SDKs. This means you can use existing libraries in your favorite language.
 
@@ -32,7 +39,8 @@ composer require openai-php/client
 ```
 </CodeGroup>
 
-### Step 3: Make your first request
+</Step>
+<Step title="Make your first request">
 
 Configure the client with our base URL and your key, then run the code to get a response from our `fast` model.
 
@@ -70,6 +78,9 @@ response = client.chat.completions.create(
 print(response.choices[0].message.content)
 ```
 </CodeGroup>
+
+</Step>
+</Steps>
 
 ## Next steps
 
