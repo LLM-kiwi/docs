@@ -9,3 +9,7 @@
 ## 2026-02-01 - Automated Accessibility Validation
 **Learning:** The Mintlify CLI includes a `mint a11y` command that checks for color contrast and missing alt text. This tool reveals issues in `docs.json` theme colors that manual review might miss.
 **Action:** Incorporate `mint a11y` into the verification process for any documentation changes, especially when modifying global themes or adding images.
+
+## 2026-02-18 - API Parameter Readability
+**Learning:** Markdown tables for API parameters often cram too much information (types, required status, description) into narrow columns, making them hard to scan. Semantic components like `<ParamField>` improve readability by visually separating these attributes.
+**Action:** Refactor API reference tables into `<ParamField>` components to clearly distinguish parameter names, types, and required status.
