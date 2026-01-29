@@ -13,16 +13,37 @@ POST https://api.llm.kiwi/v1/chat/completions
 
 ## Request Parameters
 
-| Parameter | Type | Required | Description |
-| :--- | :--- | :--- | :--- |
-| `model` | string | Yes | Model ID: `default` (Free), or any Pro model (e.g. `gpt-oss-20b`). |
-| `messages` | array | Yes | Conversation history as message objects. |
-| `stream` | boolean | No | Enable streaming responses. Default: `false`. |
-| `temperature` | number | No | Sampling temperature (0-2). Default: `1`. |
-| `max_tokens` | integer | No | Maximum tokens to generate. |
-| `response_format` | object | No | Set `{ "type": "json_object" }` for JSON mode. <sup>Pro</sup> |
-| `tools` | array | No | Function definitions for tool calling. <sup>Pro</sup> |
-| `tool_choice` | string/object | No | Control tool selection behavior. <sup>Pro</sup> |
+<ParamField body="model" type="string" required>
+  Model ID: `default` (Free), or any Pro model (e.g. `gpt-oss-20b`).
+</ParamField>
+
+<ParamField body="messages" type="array" required>
+  Conversation history as message objects.
+</ParamField>
+
+<ParamField body="stream" type="boolean" default="false">
+  Enable streaming responses.
+</ParamField>
+
+<ParamField body="temperature" type="number" default="1">
+  Sampling temperature (0-2).
+</ParamField>
+
+<ParamField body="max_tokens" type="integer">
+  Maximum tokens to generate.
+</ParamField>
+
+<ParamField body="response_format" type="object">
+  Set `{ "type": "json_object" }` for JSON mode. <sup>Pro</sup>
+</ParamField>
+
+<ParamField body="tools" type="array">
+  Function definitions for tool calling. <sup>Pro</sup>
+</ParamField>
+
+<ParamField body="tool_choice" type="string/object">
+  Control tool selection behavior. <sup>Pro</sup>
+</ParamField>
 
 ## Message Format
 
