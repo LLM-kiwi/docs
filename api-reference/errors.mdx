@@ -40,48 +40,50 @@ llm.kiwi uses standard HTTP response codes and returns detailed error objects fo
 
 ## Common Errors & Solutions
 
-### 401: Invalid API Key
+<AccordionGroup>
+  <Accordion title="401: Invalid API Key">
+    ```json
+    {"error": {"message": "Invalid API key", "type": "authentication_error"}}
+    ```
 
-```json
-{"error": {"message": "Invalid API key", "type": "authentication_error"}}
-```
+    **Solutions:**
+    - Verify your key is correct and hasn't been rotated
+    - Ensure the `Authorization` header is formatted as `Bearer YOUR_API_KEY`
+    - Check that your key is active in the [Dashboard](https://llm.kiwi/dashboard)
+  </Accordion>
 
-**Solutions:**
-- Verify your key is correct and hasn't been rotated
-- Ensure the `Authorization` header is formatted as `Bearer YOUR_API_KEY`
-- Check that your key is active in the [Dashboard](https://llm.kiwi/dashboard)
+  <Accordion title="429: Rate Limit Exceeded">
+    ```json
+    {"error": {"message": "Rate limit exceeded", "type": "rate_limit_error"}}
+    ```
 
-### 429: Rate Limit Exceeded
+    **Solutions:**
+    - Implement exponential backoff (see below)
+    - Check `X-RateLimit-Reset` header for when limits reset
+    - Consider upgrading to a higher tier
+  </Accordion>
 
-```json
-{"error": {"message": "Rate limit exceeded", "type": "rate_limit_error"}}
-```
+  <Accordion title="400: Context Length Exceeded">
+    ```json
+    {"error": {"message": "Context length exceeded", "type": "invalid_request_error", "code": "context_length_exceeded"}}
+    ```
 
-**Solutions:**
-- Implement exponential backoff (see below)
-- Check `X-RateLimit-Reset` header for when limits reset
-- Consider upgrading to a higher tier
+    **Solutions:**
+    - Reduce the length of your prompt or conversation history
+    - Decrease `max_tokens` parameter
+    - Use a model with higher context limits
+  </Accordion>
 
-### 400: Context Length Exceeded
+  <Accordion title="403: Insufficient Tier">
+    ```json
+    {"error": {"message": "This feature requires Pro tier", "type": "access_denied_error"}}
+    ```
 
-```json
-{"error": {"message": "Context length exceeded", "type": "invalid_request_error", "code": "context_length_exceeded"}}
-```
-
-**Solutions:**
-- Reduce the length of your prompt or conversation history
-- Decrease `max_tokens` parameter
-- Use a model with higher context limits
-
-### 403: Insufficient Tier
-
-```json
-{"error": {"message": "This feature requires Pro tier", "type": "access_denied_error"}}
-```
-
-**Solutions:**
-- Upgrade your account at [llm.kiwi/pricing](https://llm.kiwi/pricing)
-- Use a feature available on your current tier
+    **Solutions:**
+    - Upgrade your account at [llm.kiwi/pricing](https://llm.kiwi/pricing)
+    - Use a feature available on your current tier
+  </Accordion>
+</AccordionGroup>
 
 ## Retry Strategy
 
